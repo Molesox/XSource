@@ -1,0 +1,81 @@
+﻿<UserControl
+    xmlns:dxwui="http://schemas.devexpress.com/winfx/2008/xaml/windowsui" 
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:ViewModels="clr-namespace:XSource.ViewModels"
+    xmlns:Service="clr-namespace:XSource.Services"
+    xmlns:dxc="http://schemas.devexpress.com/winfx/2008/xaml/core"
+    xmlns:dxr="http://schemas.devexpress.com/winfx/2008/xaml/ribbon"
+    xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm" 
+    xmlns:dxwuin="http://schemas.devexpress.com/winfx/2008/xaml/windowsui/navigation"
+    xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid" 
+    x:Class="XSource.Views.MainView"
+    mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="300">
+
+    <UserControl.DataContext>
+        <ViewModels:MainViewModel/>
+    </UserControl.DataContext>
+
+    <Grid>
+        <Border BorderBrush="OrangeRed" 
+                BorderThickness="1" 
+                CornerRadius="3">
+
+            <dxg:GridControl x:Name="xResourcesGrid" 
+                         ItemsSource="{Binding ItemsSource}"
+                         CurrentItem="{Binding CurrentItem}"
+                         ShowBorder="False"
+                         Margin="3"
+                         
+                         >
+
+                <dxmvvm:Interaction.Behaviors>
+                    <Service:GridService/>
+                </dxmvvm:Interaction.Behaviors>
+
+                <dxg:GridControl.InputBindings>
+
+                    <KeyBinding  Command="{Binding View.Commands.DeleteFocusedRow, ElementName=xResourcesGrid}" Gesture="Ctrl+delete"/>
+                    <KeyBinding  Command="{Binding NewResourceCommand}" Gesture="Ctrl+n" />
+                    <KeyBinding  Command="{Binding EditResourceCommand }" Gesture="CTRL+e"/>
+
+                </dxg:GridControl.InputBindings>
+
+                <dxg:GridControl.View>
+
+                    <dxg:TableView x:Name="tableView"
+                               AllowColumnMoving="False"
+                               ShowGroupPanel="False"
+                               AllowGrouping="False"
+                               VerticalScrollbarVisibility="Auto"
+                               HorizontalScrollbarVisibility="Auto"
+                               ExpandDetailButtonWidth="10"
+                               Loaded="TableView_Loaded"
+                               AllowEditing="False"
+                               RowDoubleClickCommand="{Binding EditResourceCommand }"
+                               DataSourceRefreshCommand="{Binding RefreshDataSourceCommand}"
+                               ValidateRowDeletionCommand="{Binding ValidateRowDeletionCommand}"
+                               />
+
+                </dxg:GridControl.View>
+
+                <dxg:GridControl.Columns>
+
+                    <dxg:GridColumn FieldName="Project" Header="Projet" GroupIndex="0" />
+                    <dxg:GridColumn FieldName="Type" Header="Type" GroupIndex="1"/>
+                    <dxg:GridColumn FieldName="Key" Header="Designation" Width="*"/>
+                    <dxg:GridColumn FieldName="En_val" Header="Anglais" Width="*"/>
+                    <dxg:GridColumn FieldName="Fr_val" Header="Français"  Width="*"/>
+                    <dxg:GridColumn FieldName="De_val" Header="Allemand"  Width="*"/>
+                    <dxg:GridColumn FieldName="It_val" Header="Italien"  Width="*"/>
+
+                </dxg:GridControl.Columns>
+
+            </dxg:GridControl>
+
+        </Border>
+    </Grid>
+
+</UserControl>

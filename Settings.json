@@ -1,0 +1,13 @@
+{
+  "ProjectConfigurations": [
+    {
+      "ProjectName": "SmartPack",
+      "ProjectPath": "C:\\Syslog\\TFVC\\SmartPack\\src\\SmartPack\\Properties",
+      "IsActive": true
+    },
+    {
+      "ProjectName": "Framework",
+      "ProjectPath": "C:\\Syslog\\TFVC\\Framework\\src\\Framework.Core\\Resources",
+      "IsActive": true
+    }
+  ]}

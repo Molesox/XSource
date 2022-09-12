@@ -1,0 +1,107 @@
+﻿<UserControl x:Class="XSource.Views.SettingsView"
+             xmlns:dxwui="http://schemas.devexpress.com/winfx/2008/xaml/windowsui" 
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:XSource.Views"
+             xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol" 
+             xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm" 
+             xmlns:dxwuin="http://schemas.devexpress.com/winfx/2008/xaml/windowsui/navigation"    
+             xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+             xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+             xmlns:dxc="http://schemas.devexpress.com/winfx/2008/xaml/core"
+             mc:Ignorable="d"          
+             xmlns:ViewModels="clr-namespace:XSource.ViewModels"
+             xmlns:Service="clr-namespace:XSource.Services"
+    
+             d:DesignHeight="800" d:DesignWidth="800">
+
+    <UserControl.DataContext>
+        <ViewModels:SettingsViewModel/>
+    </UserControl.DataContext>
+
+    <Grid Margin="5">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <dxlc:GroupBox TitleVisibility="Collapsed" 
+                       BorderThickness="1" 
+                       CornerRadius="3"
+                       BorderBrush="OrangeRed"
+                       Grid.Row="0"
+                       >
+
+            <dxlc:LayoutGroup View="Group"
+                              Orientation="Vertical"              
+                              ItemLabelsAlignment="Local"
+                              Margin="10,20,10,10"
+                              >
+                <StackPanel>
+                    <Label Content="Liste des projets" Margin="0,0,0,10"/>
+
+                    <dxg:GridControl x:Name="xSettingsGrid" 
+                         ItemsSource="{Binding AppSettings.ProjectConfigurations}"
+                         ShowBorder="False"
+                         Margin="3"
+                         MaxHeight="500"        
+                         >
+
+                        <dxg:GridControl.InputBindings>
+                            <KeyBinding Command="{Binding View.Commands.DeleteSelectedRows, ElementName=xSettingsGrid}" Key="Delete" />
+                            <KeyBinding Command="{Binding TableViewCommands.AddNewRow, ElementName=tableView}" Key="Insert" />
+                        </dxg:GridControl.InputBindings>
+
+                        <dxmvvm:Interaction.Behaviors>
+                            <Service:GridService/>
+                        </dxmvvm:Interaction.Behaviors>
+
+                        <dxg:GridControl.View>
+                            <dxg:TableView x:Name="tableView"
+                               AllowColumnMoving="False"
+                               ShowGroupPanel="False"
+                               AllowGrouping="False"
+                               VerticalScrollbarVisibility="Auto"
+                               HorizontalScrollbarVisibility="Auto"
+                               ExpandDetailButtonWidth="10"
+                               NewItemRowPosition="Top"
+                               AllowEditing="True"
+                                             
+                               />
+                        </dxg:GridControl.View>
+
+                        <dxg:GridControl.Columns>
+
+                            <dxg:GridColumn FieldName="ProjectName" Header="Nom" SortIndex="0"/>
+                            <dxg:GridColumn FieldName="ProjectPath" Header="Chemin d'accès" Width="*"/>
+                            <dxg:GridColumn FieldName="IsActive" Header="Actif"/>
+
+                        </dxg:GridControl.Columns>
+
+                    </dxg:GridControl>
+                </StackPanel>
+            </dxlc:LayoutGroup>
+
+        </dxlc:GroupBox>
+
+        <StackPanel Grid.Row="1" 
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Right"
+                    Margin="0,5,9,5"
+                    
+                    >
+            <dxc:SimpleButton CornerRadius="2" Width="100" Content="Annuler" 
+                              BorderBrush="OrangeRed"
+                              Command="{Binding NavigateBackCommand}"
+                              />
+            <dxc:SimpleButton CornerRadius="2" Width="100" Content="Écraser" 
+                              Margin="8,0,0,0" 
+                              BorderBrush="OrangeRed"
+                              Command="{Binding SaveAppSettingsCommand}"
+                              />
+        </StackPanel>
+    </Grid>
+</UserControl>
