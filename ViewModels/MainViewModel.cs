@@ -5,17 +5,11 @@ using DevExpress.Mvvm.Native;
 using DevExpress.Mvvm.Xpf;
 using DevExpress.Xpf.WindowsUI.Navigation;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Configuration;
 using System.Linq;
-using System.Windows;
-using System.Windows.Forms.VisualStyles;
-using System.Windows.Media.Animation;
 using XSource.Domain;
 using XSource.Helpers;
 using XSource.Services;
-using XSource.Views;
 
 namespace XSource.ViewModels
 {
@@ -66,7 +60,7 @@ namespace XSource.ViewModels
         }
 
         /// <summary>
-        /// Gets or sets the list of all the project resources.
+        /// Gets or sets the list of all the project resources aggregated as one big list.
         /// </summary>
         public BindingList<XResource> ItemsSource
         {
@@ -114,7 +108,7 @@ namespace XSource.ViewModels
         }
 
         /// <summary>
-        /// On command triggered, navigates to the edit view with a new instance initialized.
+        /// Navigates to the edit view with a new instance initialized.
         /// </summary>
         /// <param name="args">RowClickArgs</param>
         [Command]
@@ -132,7 +126,7 @@ namespace XSource.ViewModels
         }
 
         /// <summary>
-        /// On command triggered, navigates to the edit view.
+        /// Navigates to the edit view.
         /// </summary>
         /// <param name="args">RowClickArgs</param>
         [Command]
@@ -144,7 +138,7 @@ namespace XSource.ViewModels
         /// <summary>
         /// If the resource is editable or not.
         /// </summary>
-        /// <returns>true if editable false otherwise.</returns>
+        /// <returns>true if CurrentItem is not null.</returns>
         public bool CanEditResource(RowClickArgs args) => CurrentItem != null;
 
         /// <summary>
@@ -164,21 +158,13 @@ namespace XSource.ViewModels
                 if (proj != null)
                     Projects.Add(proj);
             }
-            ItemsSource?.Clear();
-            try
-            {
-                foreach (var projet in Projects)
-                {
-                    foreach (XResource resx in projet.Resources)
-                    {
-                        ItemsSource.Add(resx);
-                    }
-                }
-            }
-            catch (Exception e)
-            {
 
-            }
+            ItemsSource?.Clear();
+
+            foreach (var projet in Projects)
+                foreach (XResource resx in projet.Resources)
+                    ItemsSource.Add(resx);
+
             GridService.ExpandFirstLevel();
         }
 
@@ -186,6 +172,11 @@ namespace XSource.ViewModels
 
         #region INavigationAware interface implementation
 
+        /// <summary>
+        /// If we get here from the settings view, we update the settings.
+        /// If we get here from the EditView, we set the new item as currently selected.
+        /// </summary>
+        /// <param name="e">NavigationEventArgs</param>
         public void NavigatedTo(NavigationEventArgs e)
         {
             if (e.Parameter != null)

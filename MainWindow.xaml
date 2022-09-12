@@ -19,29 +19,6 @@
     xmlns:dxwuin="http://schemas.devexpress.com/winfx/2008/xaml/windowsui/navigation"
     xmlns:ViewModels="clr-namespace:XSource.ViewModels"
     Height="650" Width="1000">
-    <!--<Window.Triggers>
-        <EventTrigger RoutedEvent="Window.MouseEnter">
-            <BeginStoryboard>
-                <Storyboard>
-                    <ColorAnimation From="OrangeRed"
-                                    To="Red" 
-                                    Storyboard.TargetProperty="(Window.Background).(SolidColorBrush.Color)" 
-                                    FillBehavior="HoldEnd" 
-                                    AutoReverse="True"
-                                    RepeatBehavior="Forever"
-                                    />
-                </Storyboard>
-            </BeginStoryboard>
-        </EventTrigger>
-       
-    </Window.Triggers>-->
-
-    <Window.Resources>
-        <Storyboard x:Key="sb2">
-            <DoubleAnimation Storyboard.TargetName="mainwindow" Storyboard.TargetProperty="Width" From="800" To="{Binding MainWidth}" Duration="0:0:3"  AutoReverse="False"/>
-            <DoubleAnimation Storyboard.TargetName="mainwindow" Storyboard.TargetProperty="Height" From="450" To="{Binding MainHeight}" Duration="0:0:3"  AutoReverse="False"/>
-        </Storyboard>
-    </Window.Resources>
 
     <Window.DataContext>
         <ViewModels:MainWindowViewModel/>

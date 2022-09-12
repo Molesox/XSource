@@ -28,7 +28,6 @@
                          CurrentItem="{Binding CurrentItem}"
                          ShowBorder="False"
                          Margin="3"
-                         
                          >
 
                 <dxmvvm:Interaction.Behaviors>

@@ -2,16 +2,14 @@
 using DevExpress.Mvvm;
 using DevExpress.Mvvm.DataAnnotations;
 using DevExpress.Xpf.WindowsUI.Navigation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using XSource.Helpers;
 
 namespace XSource.ViewModels
 {
-    public class MainWindowViewModel : ViewModelBase, INavigationAware
+    /// <summary>
+    /// The main window view model class handling.
+    /// </summary>
+    public class MainWindowViewModel : ViewModelBase
     {
 
         #region Properties
@@ -48,32 +46,24 @@ namespace XSource.ViewModels
         #region Commands
 
         /// <summary>
-        /// Triggered on settings buton click. Navigates to the settings view.
+        /// Triggered on settings button click. Navigates to the settings view.
         /// </summary>
         [Command]
         public void OnSettingsClick()
         {
-            NavigationService.Navigate("SettingsView", AppSettings, this, true);
+            NavigationService.Navigate("SettingsView", AppSettings, this, saveToJournal: true);
         }
 
+        /// <summary>
+        /// As soon as the window is loaded, the main view is displayed.
+        /// </summary>
         [Command]
         public void OnViewLoadedCommand()
         {
             NavigationService.Navigate("MainView", AppSettings, this, saveToJournal: true);
         }
 
-        public void NavigatedTo(NavigationEventArgs e)
-        {
-        }
-
-        public void NavigatingFrom(NavigatingEventArgs e)
-        {
-        }
-
-        public void NavigatedFrom(NavigationEventArgs e)
-        {
-        }
-
         #endregion
+
     }
 }

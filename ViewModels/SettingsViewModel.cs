@@ -2,16 +2,14 @@
 using DevExpress.Mvvm;
 using DevExpress.Mvvm.DataAnnotations;
 using DevExpress.Xpf.WindowsUI.Navigation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using XSource.Helpers;
 using XSource.Services;
 
 namespace XSource.ViewModels
 {
+    /// <summary>
+    /// The Settings view model class handling.
+    /// </summary>
     public class SettingsViewModel : ViewModelBase, INavigationAware
     {
         #region Properties

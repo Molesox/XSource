@@ -1,21 +1,11 @@
-﻿using Configuration;
-using DevExpress.Mvvm.Native;
+﻿using DevExpress.Mvvm.Native;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Configuration;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Resources;
-using System.Text;
-using System.Text.Json;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using System.Xml.Linq;
-using System.Xml.Serialization;
 using XSource.Domain;
 
 namespace XSource.Helpers
@@ -43,7 +33,7 @@ namespace XSource.Helpers
         }
 
         /// <summary>
-        /// Adds or updates a resource key value entry given a file path.
+        /// Adds or updates a resource key/value entry given a file path.
         /// </summary>
         /// <param name="key">the key of the resource</param>
         /// <param name="value">the value of the resource</param>
@@ -66,6 +56,9 @@ namespace XSource.Helpers
                     resx.Add(modifiedResx);
                 }
             }
+            try
+            {
+
             using (var writer = new ResXResourceWriter(path))
             {
                 resx.ForEach(r =>
@@ -74,8 +67,16 @@ namespace XSource.Helpers
                 });
                 writer.Generate();
             }
+            }catch(Exception e)
+            {
+                Logger.Error(e, nameof(XHelper.AddOrUpdateResource));
+            }
         }
 
+        /// <summary>
+        /// Deletes a resource from all files.
+        /// </summary>
+        /// <param name="resx">The resource to delete.</param>
         public static void DeleteResource(XResource resx)
         {
             DeleteResource(resx.Key, resx.En_val, resx.FilePath[Languages.EN]);
@@ -84,21 +85,34 @@ namespace XSource.Helpers
             DeleteResource(resx.Key, resx.It_val, resx.FilePath[Languages.IT]);
         }
 
+        /// <summary>
+        /// Deletes a resource key/value entry given a file path.
+        /// </summary>
+        /// <param name="key">the key of the resource</param>
+        /// <param name="value">the value of the resource</param>
+        /// <param name="path">the path of the file</param>
         public static void DeleteResource(string key, string value, string path)
         {
             var resx = new List<DictionaryEntry>();
-            using(var reader = new ResXResourceReader(path))
+            using (var reader = new ResXResourceReader(path))
             {
                 resx = reader.Cast<DictionaryEntry>().ToList();
                 resx.Remove(resx.First(r => r.Key.ToString() == key));
             }
-            using (var writer = new ResXResourceWriter(path))
+            try
             {
-                resx.ForEach(r =>
+
+                using (var writer = new ResXResourceWriter(path))
                 {
-                    writer.AddResource(r.Key.ToString(), r.Value?.ToString() ?? "");
-                });
-                writer.Generate();
+                    resx.ForEach(r =>
+                    {
+                        writer.AddResource(r.Key.ToString(), r.Value?.ToString() ?? "");
+                    });
+                    writer.Generate();
+                }
+            }catch(Exception e)
+            {
+                Logger.Error(e, nameof(XHelper.DeleteResource));
             }
         }
 

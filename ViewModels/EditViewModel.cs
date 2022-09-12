@@ -14,14 +14,23 @@ using XSource.Helpers;
 
 namespace XSource.ViewModels
 {
+    /// <summary>
+    /// Helper class for holding the type and corresponding filepaths.
+    /// </summary>
     public class TypesPaths : ViewModelBase
     {
+        /// <summary>
+        /// Gets or sets the type.
+        /// </summary>
         public string Type
         {
             get => GetProperty(() => Type);
             set => SetProperty(() => Type, value);
         }
 
+        /// <summary>
+        /// Gets or sets the file paths dictionnary.
+        /// </summary>
         public Dictionary<string, string> FilePaths
         {
             get => GetProperty(() => FilePaths);
@@ -29,6 +38,9 @@ namespace XSource.ViewModels
         }
     }
 
+    /// <summary>
+    /// The edit view model class handling.
+    /// </summary>
     public class EditViewModel : ViewModelBase, INavigationAware
     {
         #region Properties
@@ -57,7 +69,7 @@ namespace XSource.ViewModels
         }
 
         /// <summary>
-        /// Gets or sets the list of projects
+        /// Gets or sets the list of projects.
         /// </summary>
         public BindingList<XProject> Projects
         {
@@ -65,12 +77,18 @@ namespace XSource.ViewModels
             set => SetProperty(() => Projects, value);
         }
 
+        /// <summary>
+        /// Gets or sets the currentyl selected project.
+        /// </summary>
         public XProject CurrentProject
         {
             get => GetProperty(() => CurrentProject);
             set => SetProperty(() => CurrentProject, value, () => RaisePropertyChanged(nameof(Types)));
         }
 
+        /// <summary>
+        /// Gets the list of TypesPaths according to the currently selected project.
+        /// </summary>
         public IList<TypesPaths> Types
         {
             get
@@ -81,8 +99,6 @@ namespace XSource.ViewModels
                     return CurrentProject.Resources.GroupBy(r => r.Type)
                                            .Select(r => new TypesPaths() { Type = r.Key, FilePaths = r.First().FilePath })
                                            .ToList();
-
-
                 }
                 return null;
             }
@@ -92,6 +108,10 @@ namespace XSource.ViewModels
 
         #region Commands & Events
 
+        /// <summary>
+        /// On combobox selection changed event. Updates the current item according to the new project.
+        /// </summary>
+        /// <param name="args"></param>
         public void ProjectChanged(XProject args)
         {
 
@@ -140,14 +160,13 @@ namespace XSource.ViewModels
 
         public void NavigatingFrom(NavigatingEventArgs e)
         {
-            if((string)e.Source == "SettingsView")
+            if ((string)e.Source == "SettingsView")
                 e.Cancel = true;
 
         }
 
         public void NavigatedFrom(NavigationEventArgs e)
         {
-            // CurrentItem = null;
         }
 
         #endregion
