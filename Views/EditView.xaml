@@ -25,7 +25,7 @@
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
-
+        
         <dxlc:GroupBox TitleVisibility="Collapsed" 
                        BorderThickness="1" 
                        CornerRadius="3"
@@ -43,21 +43,25 @@
                                   ItemSpace="15"
                                   Margin="10,0,0,30"
                                   >
+                    
 
                     <dxlc:LayoutItem Label="Projet"
                                      AddColonToLabel="False"
                                      MaxWidth="300">
 
-                        
-                        <dxe:ComboBoxEdit ItemsSource="{Binding Projects}"
+                            <dxe:ComboBoxEdit ItemsSource="{Binding Projects}"
                                           SelectedItem="{Binding CurrentProject}"
                                           CornerRadius="2" 
                                           MinHeight="30" 
                                           MaxWidth="250"
                                           DisplayMember="Name" 
+                                          AllowNullInput="False"
                                           IsReadOnly="{DXBinding '!IsNewMode'}"
                                           SelectedIndexChanged="{DXEvent 'ProjectChanged(@s.SelectedItem)'}"/>
-
+                        
+                        
+                       
+                        
                     </dxlc:LayoutItem>
 
                     <dxlc:LayoutItem Label="Type"
@@ -67,21 +71,24 @@
                         <dxe:ComboBoxEdit ItemsSource="{Binding Types, UpdateSourceTrigger=PropertyChanged}"
                                           DisplayMember="Type"
                                           ValueMember="Type"
+                                          AllowNullInput="False"
                                           CornerRadius="2" 
                                           MinHeight="30" 
                                           MaxWidth="250"
+                                          LostFocus="{DXEvent 'Changed()'}"
                                           IsReadOnly="{DXBinding !IsNewMode}"
                                           EditValue="{Binding CurrentItem.Type, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                         />
                     </dxlc:LayoutItem>
                     
-                    <dxlc:LayoutItem Label="Designation"
+                    <dxlc:LayoutItem Label="Clé"
                                      AddColonToLabel="False"
                                      MaxWidth="300">
 
                         <dxe:TextEdit IsReadOnly="{DXBinding '!IsNewMode'}" CornerRadius="2" MinHeight="30" MaxWidth="250"
                                       EditValue="{Binding CurrentItem.Key}"  AcceptsReturn="True"
                                       AllowNullInput="False"
+                                      LostFocus="{DXEvent 'Changed()'}"
                                       SelectionBrush="OrangeRed"/>
                     </dxlc:LayoutItem>
                     
@@ -90,41 +97,41 @@
 
                 <Separator BorderBrush="OrangeRed" BorderThickness="0 1 0 0" VerticalAlignment="Top"  />
 
-                <dxlc:LayoutGroup View="Group"
+                    <dxlc:LayoutGroup View="Group"
                                   Orientation="Vertical"
                                   ItemSpace="15"
                                   Padding="10,20,0,0"
                                   VerticalAlignment="Top" 
                                   >
 
-                    <dxlc:LayoutItem Label="Anglais"
+                        <dxlc:LayoutItem Label="Anglais"
                                      AddColonToLabel="False">
 
-                        <dxe:TextEdit CornerRadius="2" MinHeight="30" EditValue="{Binding CurrentItem.En_val}" />
-                    </dxlc:LayoutItem>
+                            <dxe:TextEdit CornerRadius="2" MinHeight="30" EditValue="{Binding CurrentItem.En_val}" />
+                        </dxlc:LayoutItem>
 
-                    <dxlc:LayoutItem Label="Français"
+                        <dxlc:LayoutItem Label="Français"
                                          AddColonToLabel="False">
 
-                        <dxe:TextEdit CornerRadius="2" MinHeight="30" EditValue="{Binding CurrentItem.Fr_val}" />
-                    </dxlc:LayoutItem>
-                    <dxlc:LayoutItem Label="Allemand"
+                            <dxe:TextEdit CornerRadius="2" MinHeight="30" EditValue="{Binding CurrentItem.Fr_val}" />
+                        </dxlc:LayoutItem>
+                        <dxlc:LayoutItem Label="Allemand"
                                          AddColonToLabel="False">
-                        <dxe:TextEdit CornerRadius="2" MinHeight="30" EditValue="{Binding CurrentItem.De_val}" />
+                            <dxe:TextEdit CornerRadius="2" MinHeight="30" EditValue="{Binding CurrentItem.De_val}" />
 
-                    </dxlc:LayoutItem>
-                    <dxlc:LayoutItem Label="Italien"
+                        </dxlc:LayoutItem>
+                        <dxlc:LayoutItem Label="Italien"
                                          AddColonToLabel="False">
 
-                        <dxe:TextEdit CornerRadius="2" MinHeight="30" EditValue="{Binding CurrentItem.It_val}" />
+                            <dxe:TextEdit CornerRadius="2" MinHeight="30" EditValue="{Binding CurrentItem.It_val}" />
 
-                    </dxlc:LayoutItem>
-                </dxlc:LayoutGroup>
+                        </dxlc:LayoutItem>
+                    </dxlc:LayoutGroup>
             </dxlc:LayoutGroup>
+                
 
         </dxlc:GroupBox>
-
-        <StackPanel Grid.Row="1" 
+            <StackPanel Grid.Row="1" 
                     Orientation="Horizontal"
                     HorizontalAlignment="Right"
                     Margin="0,5,9,5"
@@ -134,9 +141,10 @@
                               BorderBrush="OrangeRed"
                               Command="{Binding NavigateBackCommand}"
                               />
+            
             <dxc:SimpleButton CornerRadius="2" Width="100" Content="Écraser" 
-                              Margin="8,0,0,0" 
                               BorderBrush="OrangeRed"
+                              IsEnabled="{Binding IsFormValid}"
                               Command="{Binding OverwriteCommand}"
                               />
         </StackPanel>

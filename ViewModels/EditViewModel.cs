@@ -1,5 +1,7 @@
-﻿using DevExpress.Mvvm;
+﻿using Configuration;
+using DevExpress.Mvvm;
 using DevExpress.Mvvm.DataAnnotations;
+using DevExpress.Mvvm.Xpf;
 using DevExpress.Xpf.Editors;
 using DevExpress.Xpf.WindowsUI.Navigation;
 using System;
@@ -43,6 +45,7 @@ namespace XSource.ViewModels
     /// </summary>
     public class EditViewModel : ViewModelBase, INavigationAware
     {
+
         #region Properties
 
         /// <summary>
@@ -104,7 +107,11 @@ namespace XSource.ViewModels
             }
         }
 
+
+
         #endregion
+
+
 
         #region Commands & Events
 
@@ -117,7 +124,12 @@ namespace XSource.ViewModels
 
             CurrentItem.Project = CurrentProject.Name;
             CurrentItem.ParentProject = CurrentProject;
+            RaisePropertyChanged(nameof(IsFormValid));
+            
         }
+
+        public void Changed() => RaisePropertyChanged(nameof(IsFormValid));
+        
 
         /// <summary>
         /// Overwrites the resource. And navigates back.
@@ -126,20 +138,42 @@ namespace XSource.ViewModels
         public void Overwrite()
         {
             if (IsNewMode)
-            {
-                var type = CurrentItem.Type;
-                var filePaths = Types.First(t => t.Type == type).FilePaths;
-                CurrentItem.FilePath = filePaths;
+            {               
+                    var type = CurrentItem.Type;
+                    var filePaths = Types.First(t => t.Type == type).FilePaths;
+                    CurrentItem.FilePath = filePaths;
+                
             }
             XHelper.OverwriteResource(CurrentItem);
             NavigationService.GoBack(CurrentItem);
 
         }
 
-        /// <summary>
-        /// Navigates back (MainView).
-        /// </summary>
         [Command]
+        public void ValidateRow(RowValidationArgs args)
+        {
+            args.Result = GetValidationErrorInfo((ProjectConfig)args.Item);
+        }
+        static ValidationErrorInfo GetValidationErrorInfo(ProjectConfig task)
+        {
+            return new ValidationErrorInfo("Please, the name and the file path must be filled in!");
+        }
+
+        /// <summary>
+        /// Returns true iif all the fields are filled.
+        /// </summary>
+        /// <returns>a bool</returns>
+        public bool IsFormValid
+        {
+            get => !string.IsNullOrWhiteSpace(CurrentItem?.Type) &&
+                   !string.IsNullOrWhiteSpace(CurrentItem?.Key) &&
+                   !string.IsNullOrWhiteSpace(CurrentItem?.Project);
+        }
+
+    /// <summary>
+    /// Navigates back (MainView).
+    /// </summary>
+    [Command]
         public void NavigateBack()
         {
             NavigationService.GoBack();

@@ -53,6 +53,8 @@
                                ExpandDetailButtonWidth="10"
                                Loaded="TableView_Loaded"
                                AllowEditing="False"
+                               ShowValidationAttributeErrors="True"
+                               ValidatesOnNotifyDataErrors="True"
                                RowDoubleClickCommand="{Binding EditResourceCommand }"
                                DataSourceRefreshCommand="{Binding RefreshDataSourceCommand}"
                                ValidateRowDeletionCommand="{Binding ValidateRowDeletionCommand}"

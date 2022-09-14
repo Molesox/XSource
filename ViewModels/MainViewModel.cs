@@ -198,7 +198,7 @@ namespace XSource.ViewModels
 
         public void NavigatingFrom(NavigatingEventArgs e)
         {
-            if (e.Source == "SettingsView")
+            if ((string)e.Source == "SettingsView")
             {
                 var appSettings = e.Parameter as AppSettings;
 

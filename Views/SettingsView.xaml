@@ -52,8 +52,8 @@
                          >
 
                         <dxg:GridControl.InputBindings>
-                            <KeyBinding Command="{Binding View.Commands.DeleteSelectedRows, ElementName=xSettingsGrid}" Key="Delete" />
-                            <KeyBinding Command="{Binding TableViewCommands.AddNewRow, ElementName=tableView}" Key="Insert" />
+                            <KeyBinding Command="{Binding View.Commands.DeleteSelectedRows, ElementName=xSettingsGrid}" Gesture="Ctrl+delete" />
+                            <KeyBinding Command="{Binding TableViewCommands.AddNewRow, ElementName=tableView}" Gesture="Ctrl+n" />
                         </dxg:GridControl.InputBindings>
 
                         <dxmvvm:Interaction.Behaviors>
@@ -65,11 +65,17 @@
                                AllowColumnMoving="False"
                                ShowGroupPanel="False"
                                AllowGrouping="False"
+                               
                                VerticalScrollbarVisibility="Auto"
                                HorizontalScrollbarVisibility="Auto"
                                ExpandDetailButtonWidth="10"
-                               NewItemRowPosition="Top"
-                               AllowEditing="True"         
+                               NewItemRowPosition="None"
+                               AllowEditing="False"
+                               EditFormShowMode="Inline"
+                               ShowValidationAttributeErrors="False"
+                               ValidatesOnNotifyDataErrors="False"            
+                               InvalidRowExceptionCommand="{Binding InvalidRowCommand}"
+                               ValidateRowCommand="{Binding ValidateRowCommand}"
                                />
                         </dxg:GridControl.View>
 

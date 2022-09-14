@@ -1,7 +1,10 @@
 ﻿using Configuration;
 using DevExpress.Mvvm;
 using DevExpress.Mvvm.DataAnnotations;
+using DevExpress.Mvvm.Xpf;
 using DevExpress.Xpf.WindowsUI.Navigation;
+using System.Threading.Tasks;
+using XSource.Domain;
 using XSource.Helpers;
 using XSource.Services;
 
@@ -49,6 +52,21 @@ namespace XSource.ViewModels
         {
             AppSettingsHelper.WriteAppSettings(AppSettings);
             NavigationService.GoBack(AppSettings);
+        }
+
+        [Command]
+        public void ValidateRow(RowValidationArgs args)
+        {
+            args.Result = GetValidationErrorInfo((ProjectConfig)args.Item);
+        }
+        static ValidationErrorInfo GetValidationErrorInfo(ProjectConfig task)
+        {
+           return new ValidationErrorInfo("Please, the name and the file path must be filled in!");
+        }
+            [Command]
+        public void InvalidRow(InvalidRowExceptionArgs args)
+        {
+            args.ExceptionMode = ExceptionMode.NoAction;
         }
 
         #endregion
