@@ -149,6 +149,10 @@ namespace XSource.ViewModels
 
         #region INavigationAware implementation
 
+        /// <summary>
+        /// Triggered when EditView is displayed.
+        /// </summary>
+        /// <param name="e">NavigationEventArgs</param>
         public void NavigatedTo(NavigationEventArgs e)
         {
             var param = e.Parameter as dynamic;
