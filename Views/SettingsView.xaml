@@ -13,8 +13,7 @@
              xmlns:dxc="http://schemas.devexpress.com/winfx/2008/xaml/core"
              mc:Ignorable="d"          
              xmlns:ViewModels="clr-namespace:XSource.ViewModels"
-             xmlns:Service="clr-namespace:XSource.Services"
-    
+             xmlns:Service="clr-namespace:XSource.Services"             
              d:DesignHeight="800" d:DesignWidth="800">
 
     <UserControl.DataContext>
@@ -53,7 +52,15 @@
 
                         <dxg:GridControl.InputBindings>
                             <KeyBinding Command="{Binding View.Commands.DeleteSelectedRows, ElementName=xSettingsGrid}" Gesture="Ctrl+delete" />
-                            <KeyBinding Command="{Binding TableViewCommands.AddNewRow, ElementName=tableView}" Gesture="Ctrl+n" />
+                            <KeyBinding Gesture="Ctrl+n">
+                                <dxmvvm:Interaction.Behaviors>
+                                    <dxmvvm:CompositeCommandBehavior>
+                                        <dxmvvm:CommandItem Command="{Binding TableViewCommands.AddNewRow, ElementName=tableView}"/>
+                                        <dxmvvm:CommandItem Command="{DXCommand Execute='@e(tableView).UpdateLayout()' }" />
+                                        <dxmvvm:CommandItem Command="{Binding TableViewCommands.EditFocusedRow, ElementName=tableView}"/>
+                                    </dxmvvm:CompositeCommandBehavior>
+                                </dxmvvm:Interaction.Behaviors>
+                            </KeyBinding>
                         </dxg:GridControl.InputBindings>
 
                         <dxmvvm:Interaction.Behaviors>
@@ -64,26 +71,32 @@
                             <dxg:TableView x:Name="tableView"
                                AllowColumnMoving="False"
                                ShowGroupPanel="False"
-                               AllowGrouping="False"
-                               
+                               AllowGrouping="False"                               
                                VerticalScrollbarVisibility="Auto"
                                HorizontalScrollbarVisibility="Auto"
-                               ExpandDetailButtonWidth="10"
-                               NewItemRowPosition="None"
-                               AllowEditing="False"
-                               EditFormShowMode="Inline"
-                               ShowValidationAttributeErrors="False"
-                               ValidatesOnNotifyDataErrors="False"            
-                               InvalidRowExceptionCommand="{Binding InvalidRowCommand}"
-                               ValidateRowCommand="{Binding ValidateRowCommand}"
+                               EditFormShowMode="InlineHideRow"
+                               ShowValidationAttributeErrors="True"
+                               ValidateRowCommand="{Binding ValidateRowCommand}"      
                                />
                         </dxg:GridControl.View>
 
                         <dxg:GridControl.Columns>
 
-                            <dxg:GridColumn FieldName="ProjectName" Header="Nom" SortIndex="0"/>
-                            <dxg:GridColumn FieldName="ProjectPath" Header="Chemin d'accès" Width="*"/>
-                            <dxg:GridColumn FieldName="IsActive" Header="Actif"/>
+                            <dxg:GridColumn FieldName="ProjectName" 
+                                            Header="Nom" 
+                                            SortIndex="0"
+                                            EditFormVisibleIndex="0"/>
+                            <dxg:GridColumn FieldName="ProjectPath"
+                                            Header="Chemin d'accès"
+                                            Width="*"
+                                            EditFormVisibleIndex="2"
+                                            EditFormStartNewRow="True"
+                                            EditFormColumnSpan="2"/>
+                            <dxg:GridColumn FieldName="IsActive" 
+                                            Header="Actif"
+                                            HorizontalHeaderContentAlignment="Center"
+                                            AllowEditing="true"
+                                            EditFormVisibleIndex="1"/>
 
                         </dxg:GridControl.Columns>
 

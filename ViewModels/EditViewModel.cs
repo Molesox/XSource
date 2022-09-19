@@ -107,58 +107,6 @@ namespace XSource.ViewModels
             }
         }
 
-
-
-        #endregion
-
-
-
-        #region Commands & Events
-
-        /// <summary>
-        /// On combobox selection changed event. Updates the current item according to the new project.
-        /// </summary>
-        /// <param name="args"></param>
-        public void ProjectChanged(XProject args)
-        {
-
-            CurrentItem.Project = CurrentProject.Name;
-            CurrentItem.ParentProject = CurrentProject;
-            RaisePropertyChanged(nameof(IsFormValid));
-            
-        }
-
-        public void Changed() => RaisePropertyChanged(nameof(IsFormValid));
-        
-
-        /// <summary>
-        /// Overwrites the resource. And navigates back.
-        /// </summary>
-        [Command]
-        public void Overwrite()
-        {
-            if (IsNewMode)
-            {               
-                    var type = CurrentItem.Type;
-                    var filePaths = Types.First(t => t.Type == type).FilePaths;
-                    CurrentItem.FilePath = filePaths;
-                
-            }
-            XHelper.OverwriteResource(CurrentItem);
-            NavigationService.GoBack(CurrentItem);
-
-        }
-
-        [Command]
-        public void ValidateRow(RowValidationArgs args)
-        {
-            args.Result = GetValidationErrorInfo((ProjectConfig)args.Item);
-        }
-        static ValidationErrorInfo GetValidationErrorInfo(ProjectConfig task)
-        {
-            return new ValidationErrorInfo("Please, the name and the file path must be filled in!");
-        }
-
         /// <summary>
         /// Returns true iif all the fields are filled.
         /// </summary>
@@ -170,13 +118,68 @@ namespace XSource.ViewModels
                    !string.IsNullOrWhiteSpace(CurrentItem?.Project);
         }
 
-    /// <summary>
-    /// Navigates back (MainView).
-    /// </summary>
-    [Command]
+        #endregion
+
+        #region Commands & Events
+
+        /// <summary>
+        /// On combobox selection changed event. Updates the current item according to the new project.
+        /// </summary>
+        /// <param name="args"></param>
+        public void ProjectChanged(XProject args)
+        {
+            CurrentItem.Project = CurrentProject.Name;
+            CurrentItem.ParentProject = CurrentProject;
+            RaisePropertyChanged(nameof(IsFormValid));
+        }
+
+
+        public void Changed() => RaisePropertyChanged(nameof(IsFormValid));
+
+
+        /// <summary>
+        /// Overwrites the resource. And navigates back.
+        /// </summary>
+        [Command]
+        public void Overwrite()
+        {
+            if (IsNewMode)
+            {
+                var type = CurrentItem.Type;
+                var filePaths = Types.First(t => t.Type == type).FilePaths;
+                CurrentItem.FilePath = filePaths;
+            }
+            XHelper.OverwriteResource(CurrentItem);
+            NavigationService.GoBack(CurrentItem);
+        }
+
+        [Command]
+        public void ValidateRow(RowValidationArgs args)
+        {
+            args.Result = GetValidationErrorInfo((ProjectConfig)args.Item);
+        }
+
+        /// <summary>
+        /// Navigates back (MainView).
+        /// </summary>
+        [Command]
         public void NavigateBack()
         {
-            NavigationService.GoBack();
+            NavigationService.Navigate("MainView");
+        }
+
+        #endregion
+
+        #region Validation
+
+        /// <summary>
+        /// Gets the validation error informations of a ProjectConfig.
+        /// </summary>
+        /// <param name="projectConf">projectConf</param>
+        /// <returns>A ValidationErrorInfo</returns>
+        static ValidationErrorInfo GetValidationErrorInfo(ProjectConfig projectConf)
+        {
+            return new ValidationErrorInfo("Please, the name and the file path must be filled in!");
         }
 
         #endregion

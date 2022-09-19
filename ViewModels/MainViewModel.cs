@@ -1,12 +1,15 @@
 ﻿using Configuration;
+using DevExpress.Internal.WinApi.Windows.UI.Notifications;
 using DevExpress.Mvvm;
 using DevExpress.Mvvm.DataAnnotations;
 using DevExpress.Mvvm.Native;
 using DevExpress.Mvvm.Xpf;
+using DevExpress.Xpf.Core;
 using DevExpress.Xpf.WindowsUI.Navigation;
 using System;
 using System.ComponentModel;
 using System.Linq;
+using System.Windows;
 using XSource.Domain;
 using XSource.Helpers;
 using XSource.Services;
@@ -122,7 +125,7 @@ namespace XSource.ViewModels
                 IsNew = true,
             };
 
-            NavigationService.Navigate("EditView", new { Projects, CurrentItem = resx }, this, true);
+            NavigationService.Navigate("EditView", new { Projects, CurrentItem = resx }, this, false);
         }
 
         /// <summary>
@@ -132,7 +135,7 @@ namespace XSource.ViewModels
         [Command]
         public void EditResource(RowClickArgs args)
         {
-            NavigationService.Navigate("EditView", new { Projects, CurrentItem }, this, true);
+            NavigationService.Navigate("EditView", new { Projects, CurrentItem }, this, false);
         }
 
         /// <summary>
@@ -157,6 +160,13 @@ namespace XSource.ViewModels
                 var proj = XHelper.LoadProject(projectConfig.ProjectName, projectConfig.ProjectPath);
                 if (proj != null)
                     Projects.Add(proj);
+                else
+                {
+                    ThemedMessageBox.Show(title: "XSource",
+                                          text: $"Si jamais, le projet : {projectConfig.ProjectName} n'existe pas dans le chemin \n {projectConfig.ProjectPath} \n Fais plus attention stp.",
+                                          messageBoxButtons: MessageBoxButton.OK,
+                                          icon: MessageBoxImage.Warning);
+                }
             }
 
             ItemsSource?.Clear();

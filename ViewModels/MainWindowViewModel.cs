@@ -51,7 +51,7 @@ namespace XSource.ViewModels
         [Command]
         public void OnSettingsClick()
         {
-            NavigationService.Navigate("SettingsView", AppSettings, this, saveToJournal: true);
+            NavigationService.Navigate("SettingsView", AppSettings, this,false);
         }
 
         /// <summary>
@@ -60,7 +60,7 @@ namespace XSource.ViewModels
         [Command]
         public void OnViewLoadedCommand()
         {
-            NavigationService.Navigate("MainView", AppSettings, this, saveToJournal: true);
+            NavigationService.Navigate("MainView", AppSettings, this, false);
         }
 
         #endregion

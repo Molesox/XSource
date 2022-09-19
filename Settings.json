@@ -2,12 +2,13 @@
   "ProjectConfigurations": [
     {
       "ProjectName": "SmartPack",
-      "ProjectPath": "C:\\Users\\sdiaz\\Desktop\\Resources\\SmartPack",
+      "ProjectPath": "C:\\Syslog\\TFVC\\SmartPack\\src\\SmartPack\\Properties",
       "IsActive": true
     },
     {
       "ProjectName": "Framework",
-      "ProjectPath": "C:\\Users\\sdiaz\\Desktop\\Resources\\Framework",
+      "ProjectPath": "C:\\Syslog\\TFVC\\Framework\\src\\Framework.Core\\Resources",
       "IsActive": true
     }
-  ]}
+  ]
+}

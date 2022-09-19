@@ -195,6 +195,7 @@ namespace XSource.Helpers
             catch (Exception e)
             {
                 Logger.Error(e, nameof(XHelper.LoadProject));
+                
             }
 
             return result;

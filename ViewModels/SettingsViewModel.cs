@@ -2,7 +2,10 @@
 using DevExpress.Mvvm;
 using DevExpress.Mvvm.DataAnnotations;
 using DevExpress.Mvvm.Xpf;
+using DevExpress.Xpf.Editors;
+using DevExpress.Xpf.Grid;
 using DevExpress.Xpf.WindowsUI.Navigation;
+using System.Linq;
 using System.Threading.Tasks;
 using XSource.Domain;
 using XSource.Helpers;
@@ -16,6 +19,11 @@ namespace XSource.ViewModels
     public class SettingsViewModel : ViewModelBase, INavigationAware
     {
         #region Properties
+
+        /// <summary>
+        /// Gets or sets the validation row delegate command.
+        /// </summary>
+        public DelegateCommand<RowValidationArgs> ValidateRowCommand { get; private set; }
 
         /// <summary>
         /// Gets the grid service from the view.
@@ -39,34 +47,51 @@ namespace XSource.ViewModels
 
         #endregion
 
+        #region Overrides
+
+        protected override void OnInitializeInRuntime()
+        {
+            ValidateRowCommand = new DelegateCommand<RowValidationArgs> (ValidateRow);
+            base.OnInitializeInRuntime();
+        }
+
+        #endregion
+
         #region Commands
+
+        /// <summary>
+        /// Validates a row.
+        /// </summary>
+        /// <param name="args"></param>
+        /// <returns></returns>
+        public void ValidateRow(RowValidationArgs args)
+        {
+            var newProjConfi = args.Item as ProjectConfig;
+
+            var repetedNames = AppSettings.ProjectConfigurations.Where(proj => proj.ProjectName == newProjConfi.ProjectName).Count();
+            var projsWithSamePath = AppSettings.ProjectConfigurations.Where(proj => proj.ProjectPath == newProjConfi.ProjectPath);
+
+            var otherProj = projsWithSamePath.First(proj => proj.ProjectName != newProjConfi.ProjectName);
+
+            if (projsWithSamePath.Count() > 1)
+                args.Result = new ValidationErrorInfo($"Ce chemin d'accès est déjà défini pour le projet {otherProj.ProjectName}", ValidationErrorType.Default);
+
+            if (repetedNames > 1)
+                    args.Result = new ValidationErrorInfo("Le même nom de projet n'est pas authorisé !", ValidationErrorType.Default);
+
+        }
 
         [Command]
         public void NavigateBack()
         {
-            NavigationService.GoBack();
+            NavigationService.Navigate("MainView");
         }
 
         [Command]
         public void SaveAppSettings()
         {
             AppSettingsHelper.WriteAppSettings(AppSettings);
-            NavigationService.GoBack(AppSettings);
-        }
-
-        [Command]
-        public void ValidateRow(RowValidationArgs args)
-        {
-            args.Result = GetValidationErrorInfo((ProjectConfig)args.Item);
-        }
-        static ValidationErrorInfo GetValidationErrorInfo(ProjectConfig task)
-        {
-           return new ValidationErrorInfo("Please, the name and the file path must be filled in!");
-        }
-            [Command]
-        public void InvalidRow(InvalidRowExceptionArgs args)
-        {
-            args.ExceptionMode = ExceptionMode.NoAction;
+            NavigationService.Navigate("MainView", AppSettings);
         }
 
         #endregion
@@ -75,10 +100,13 @@ namespace XSource.ViewModels
 
         public void NavigatedFrom(NavigationEventArgs e)
         {
+          
         }
 
         public void NavigatedTo(NavigationEventArgs e)
         {
+            if (e.Parameter == null)
+                return;
             var temp = e.Parameter as AppSettings;
             AppSettings = new AppSettings()
             {

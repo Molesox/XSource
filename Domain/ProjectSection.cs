@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DevExpress.Xpf.Ribbon.Customization;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration;
@@ -11,8 +12,10 @@ using System.Threading.Tasks;
 namespace Configuration
 {
 
+
     public class AppSettings
     {
+
         public AppSettings()
         {
             ProjectConfigurations = new BindingList<ProjectConfig>();
