@@ -69,15 +69,21 @@ namespace XSource.ViewModels
             var newProjConfi = args.Item as ProjectConfig;
 
             var repetedNames = AppSettings.ProjectConfigurations.Where(proj => proj.ProjectName == newProjConfi.ProjectName).Count();
+            if (repetedNames > 1)
+            {
+                args.Result = new ValidationErrorInfo("Le même nom de projet n'est pas authorisé !", ValidationErrorType.Default);
+                return;
+            }
+
             var projsWithSamePath = AppSettings.ProjectConfigurations.Where(proj => proj.ProjectPath == newProjConfi.ProjectPath);
 
-            var otherProj = projsWithSamePath.First(proj => proj.ProjectName != newProjConfi.ProjectName);
+            var otherProj = projsWithSamePath.FirstOrDefault(proj => proj.ProjectName != newProjConfi.ProjectName);
 
             if (projsWithSamePath.Count() > 1)
+            {
                 args.Result = new ValidationErrorInfo($"Ce chemin d'accès est déjà défini pour le projet {otherProj.ProjectName}", ValidationErrorType.Default);
-
-            if (repetedNames > 1)
-                    args.Result = new ValidationErrorInfo("Le même nom de projet n'est pas authorisé !", ValidationErrorType.Default);
+                return;
+            }        
 
         }
 

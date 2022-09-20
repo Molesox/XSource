@@ -107,7 +107,10 @@ namespace XSource.ViewModels
         public void ValidateRowDeletion(ValidateRowDeletionArgs args)
         {
             var toDelete = args.Items[0] as XResource;
-            XHelper.DeleteResource(toDelete);
+            var result = ThemedMessageBox.Show(title: "XSource", text: $"T'es sûr de vouloir supprimer la resource {toDelete.Key}?", messageBoxButtons: MessageBoxButton.OKCancel, icon: MessageBoxImage.Question);
+            if (result == MessageBoxResult.OK)
+                XHelper.DeleteResource(toDelete);
+        
         }
 
         /// <summary>

@@ -31,6 +31,8 @@
                        CornerRadius="3"
                        BorderBrush="OrangeRed"
                        Grid.Row="0"
+                       dxe:ValidationService.IsValidationContainer="True"
+                       x:Name="container"
                        >
 
             <dxlc:LayoutGroup View="Group"
@@ -55,7 +57,7 @@
                                           MinHeight="30" 
                                           MaxWidth="250"
                                           DisplayMember="Name" 
-                                          AllowNullInput="False"
+                                          AllowNullInput="True"
                                           IsReadOnly="{DXBinding '!IsNewMode'}"
                                           SelectedIndexChanged="{DXEvent 'ProjectChanged(@s.SelectedItem)'}"/>
 
@@ -65,14 +67,14 @@
                                      AddColonToLabel="False"
                                      MaxWidth="300">
 
-                        <dxe:ComboBoxEdit ItemsSource="{Binding Types, UpdateSourceTrigger=PropertyChanged}"
+                        <dxe:ComboBoxEdit ItemsSource="{Binding Types, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                                           DisplayMember="Type"
                                           ValueMember="Type"
                                           AllowNullInput="False"
                                           CornerRadius="2" 
                                           MinHeight="30" 
                                           MaxWidth="250"
-                                          SelectedIndexChanged="{DXEvent 'Changed()'}"
+                                          AllowSpinOnMouseWheel="True"
                                           IsReadOnly="{DXBinding !IsNewMode}"
                                           EditValue="{Binding CurrentItem.Type, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                         />
@@ -83,10 +85,13 @@
                                      MaxWidth="300">
 
                         <dxe:TextEdit IsReadOnly="{DXBinding '!IsNewMode'}" CornerRadius="2" MinHeight="30" MaxWidth="250"
-                                      EditValue="{Binding CurrentItem.Key}"  AcceptsReturn="True"
+                                      EditValue="{Binding CurrentItem.Key, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}" 
+                                      AcceptsReturn="False"
                                       AllowNullInput="False"
-                                      EditValueChanged="{DXEvent 'Changed()'}"
-                                      SelectionBrush="OrangeRed"/>
+                                      CausesValidation="True"
+                                      ValidateOnTextInput="False"
+                                      InvalidValueBehavior="AllowLeaveEditor"
+                                       />
                     </dxlc:LayoutItem>
 
                 </dxlc:LayoutGroup>
@@ -141,7 +146,7 @@
 
             <dxc:SimpleButton CornerRadius="2" Width="100" Content="Écraser" 
                               BorderBrush="OrangeRed"
-                              IsEnabled="{Binding IsFormValid}"
+                              IsEnabled="{Binding ElementName=container, Path=(dxe:ValidationService.HasValidationError), Converter={dxmvvm:BooleanNegationConverter}}"
                               Command="{Binding OverwriteCommand}"
                               />
         </StackPanel>

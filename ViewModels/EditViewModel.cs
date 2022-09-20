@@ -107,16 +107,7 @@ namespace XSource.ViewModels
             }
         }
 
-        /// <summary>
-        /// Returns true iif all the fields are filled.
-        /// </summary>
-        /// <returns>a bool</returns>
-        public bool IsFormValid
-        {
-            get => !string.IsNullOrWhiteSpace(CurrentItem?.Type) &&
-                   !string.IsNullOrWhiteSpace(CurrentItem?.Key) &&
-                   !string.IsNullOrWhiteSpace(CurrentItem?.Project);
-        }
+
 
         #endregion
 
@@ -128,14 +119,10 @@ namespace XSource.ViewModels
         /// <param name="args"></param>
         public void ProjectChanged(XProject args)
         {
-            CurrentItem.Project = CurrentProject.Name;
+            CurrentItem.Project = CurrentProject?.Name;
             CurrentItem.ParentProject = CurrentProject;
-            RaisePropertyChanged(nameof(IsFormValid));
+    ;
         }
-
-
-        public void Changed() => RaisePropertyChanged(nameof(IsFormValid));
-
 
         /// <summary>
         /// Overwrites the resource. And navigates back.
@@ -153,12 +140,6 @@ namespace XSource.ViewModels
             NavigationService.GoBack(CurrentItem);
         }
 
-        [Command]
-        public void ValidateRow(RowValidationArgs args)
-        {
-            args.Result = GetValidationErrorInfo((ProjectConfig)args.Item);
-        }
-
         /// <summary>
         /// Navigates back (MainView).
         /// </summary>
@@ -170,19 +151,6 @@ namespace XSource.ViewModels
 
         #endregion
 
-        #region Validation
-
-        /// <summary>
-        /// Gets the validation error informations of a ProjectConfig.
-        /// </summary>
-        /// <param name="projectConf">projectConf</param>
-        /// <returns>A ValidationErrorInfo</returns>
-        static ValidationErrorInfo GetValidationErrorInfo(ProjectConfig projectConf)
-        {
-            return new ValidationErrorInfo("Please, the name and the file path must be filled in!");
-        }
-
-        #endregion
 
         #region INavigationAware implementation
 
@@ -197,6 +165,12 @@ namespace XSource.ViewModels
             CurrentItem = param.CurrentItem;
             IsNewMode = CurrentItem.IsNew;
             Projects = param.Projects;
+            CurrentProject = Projects.FirstOrDefault(p => p.Name == CurrentItem.Project);
+            if (CurrentProject == null)
+            {
+                CurrentProject = Projects.FirstOrDefault();
+                CurrentItem.Type = Types.FirstOrDefault()?.Type;
+            }
         }
 
         public void NavigatingFrom(NavigatingEventArgs e)

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -61,8 +62,38 @@ namespace XSource.Domain
     /// <summary>
     /// The resource entity class handling.
     /// </summary>
-    public class XResource : ViewModelBase
+    public class XResource : ViewModelBase, IDataErrorInfo
     {
+
+        public string this[string columnName]
+        {
+            get
+            {
+                switch (columnName)
+                {
+                    case "Key":
+                        return string.IsNullOrEmpty(Key) ? "La clef d'une resource est requise !" : null;
+                    case "Project":
+                        return string.IsNullOrEmpty(Project) ? "Une resource appartient à un projet !" : null;
+                    case "Type":
+                        return string.IsNullOrEmpty(Type) ? "Il faut selectionner un type!" : null;
+
+                    default:
+                        return null;
+                }
+            }
+        }
+
+
+        public string Error
+        {
+            get
+            {
+                return this["Key"] != null ? "Hélas, on n'est pas ok, faut corriger les valeurs renseignées et après on en reparle." : null;
+            }
+        }
+
+
         #region Properies
 
         /// <summary>
@@ -154,6 +185,7 @@ namespace XSource.Domain
             get => GetProperty(() => ParentProject);
             set => SetProperty(() => ParentProject, value);
         }
+
 
         #endregion
 

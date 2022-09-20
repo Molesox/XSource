@@ -27,6 +27,6 @@ namespace XSource.Views
             InitializeComponent();
         }
 
-       
+        
     }
 }
