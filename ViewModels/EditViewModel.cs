@@ -133,7 +133,7 @@ namespace XSource.ViewModels
         {
             base.OnInitializeInRuntime();
 
-            DeeplTranslator = new Translator("c secret ;)");
+            DeeplTranslator = new Translator("81e0e30d-fce8-6d8e-dd98-b073b8050572:fx");
 
             var usage = await DeeplTranslator.GetUsageAsync();
             IsTradServiceOk = !usage.AnyLimitReached;
@@ -208,7 +208,6 @@ namespace XSource.ViewModels
         }
 
         #endregion
-
 
         #region INavigationAware implementation
 

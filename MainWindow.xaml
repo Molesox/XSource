@@ -71,20 +71,28 @@
             </dxdo:LayoutGroup>
         </dxdo:DockLayoutManager>
 
-        <dxr:RibbonStatusBarControl Grid.Row="1">
+        <dxr:RibbonStatusBarControl Grid.Row="1" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center">
             <dxr:RibbonStatusBarControl.LeftItems>
                 <dxb:BarButtonItem 
-                                   Glyph="\Resources\Icons\settings.svg" 
-                                  GlyphSize="Large"
+                                    Glyph="\Resources\Icons\settings.svg" 
+                                    LargeGlyph="\Resources\Icons\settings.svg" 
+                    
+                                    GlyphSize="Medium"
                                     BarItemDisplayMode="Default"
                                     ToolTip="Paramètres"
                                    Command="{Binding OnSettingsClickCommand}" AllowGlyphTheming="True" />
             </dxr:RibbonStatusBarControl.LeftItems>
-            <dxr:RibbonStatusBarControl.RightItems>
-                <dxb:BarEditItem ToolTip="Ratio des traductions efféctuées par rapport à la limite mensuelle (500k charactères)." 
-                                 Glyph="\Resources\Images\deepl.png"
-                                 GlyphSize="Large" 
-                                 Content="{Binding DisplayLimitPercentage}" />
+            <dxr:RibbonStatusBarControl.RightItems  >
+                <dxb:BarButtonItem  ToolTip="Ratio des traductions efféctuées par rapport à la limite mensuelle (500k charactères)." 
+                                    Glyph="/Resources/Icons/DeepL_logo.svg"
+                                    GlyphSize="Custom"
+                                    GlyphAlignment="Left"
+                                    CustomGlyphSize="50 20"
+                                    
+                                    Content="{Binding DisplayLimitPercentage}"
+                                 >
+
+                </dxb:BarButtonItem>
             </dxr:RibbonStatusBarControl.RightItems>
         </dxr:RibbonStatusBarControl>
 
