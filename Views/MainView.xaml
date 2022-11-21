@@ -12,39 +12,46 @@
     xmlns:dxwuin="http://schemas.devexpress.com/winfx/2008/xaml/windowsui/navigation"
     xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid" 
     x:Class="XSource.Views.MainView"
-    mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="300">
+    mc:Ignorable="d" d:DesignHeight="500" d:DesignWidth="600">
 
     <UserControl.DataContext>
         <ViewModels:MainViewModel/>
     </UserControl.DataContext>
 
-    <Grid>
-        <Border BorderBrush="OrangeRed" 
-                BorderThickness="1" 
-                CornerRadius="3">
+    <UserControl.Resources>
 
-            <dxg:GridControl x:Name="xResourcesGrid" 
+        <Style x:Key="rowStyle" TargetType="dxg:RowControl">
+            <Style.Triggers>
+                <Trigger Property="dxg:GridViewBase.IsFocusedRow" Value="True">
+                    
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+    
+    <Grid>
+        <dxg:GridControl x:Name="xResourcesGrid" 
                          ItemsSource="{Binding ItemsSource}"
                          CurrentItem="{Binding CurrentItem}"
-                         ShowBorder="False"
-                         Margin="3"
+                         FontSize="14" 
+                         ShowBorder="False" 
                          >
+            
+            <dxmvvm:Interaction.Behaviors>
+                <Service:GridService/>
+            </dxmvvm:Interaction.Behaviors>
 
-                <dxmvvm:Interaction.Behaviors>
-                    <Service:GridService/>
-                </dxmvvm:Interaction.Behaviors>
+            <dxg:GridControl.InputBindings>
 
-                <dxg:GridControl.InputBindings>
+                <KeyBinding  Command="{Binding View.Commands.DeleteFocusedRow, ElementName=xResourcesGrid}" Gesture="Ctrl+delete"/>
+                <KeyBinding  Command="{Binding NewResourceCommand}" Gesture="Ctrl+n" />
+                <KeyBinding  Command="{Binding EditResourceCommand }" Gesture="CTRL+e"/>
 
-                    <KeyBinding  Command="{Binding View.Commands.DeleteFocusedRow, ElementName=xResourcesGrid}" Gesture="Ctrl+delete"/>
-                    <KeyBinding  Command="{Binding NewResourceCommand}" Gesture="Ctrl+n" />
-                    <KeyBinding  Command="{Binding EditResourceCommand }" Gesture="CTRL+e"/>
+            </dxg:GridControl.InputBindings>
 
-                </dxg:GridControl.InputBindings>
+            <dxg:GridControl.View>
 
-                <dxg:GridControl.View>
-
-                    <dxg:TableView x:Name="tableView"
+                <dxg:TableView x:Name="tableView"
                                AllowColumnMoving="False"
                                ShowGroupPanel="False"
                                AllowGrouping="False"
@@ -55,28 +62,30 @@
                                AllowEditing="False"
                                ShowValidationAttributeErrors="True"
                                ValidatesOnNotifyDataErrors="True"
+                               RowStyle="{StaticResource rowStyle}"
                                RowDoubleClickCommand="{Binding EditResourceCommand }"
                                DataSourceRefreshCommand="{Binding RefreshDataSourceCommand}"
                                ValidateRowDeletionCommand="{Binding ValidateRowDeletionCommand}"
                                />
 
-                </dxg:GridControl.View>
+            </dxg:GridControl.View>
 
-                <dxg:GridControl.Columns>
+            <dxg:GridControl.Columns>
 
-                    <dxg:GridColumn FieldName="Project" Header="Projet" GroupIndex="0" />
-                    <dxg:GridColumn FieldName="Type" Header="Type" GroupIndex="1"/>
-                    <dxg:GridColumn FieldName="Key" Header="Designation" Width="*"/>
-                    <dxg:GridColumn FieldName="En_val" Header="Anglais" Width="*"/>
-                    <dxg:GridColumn FieldName="Fr_val" Header="Français"  Width="*"/>
-                    <dxg:GridColumn FieldName="De_val" Header="Allemand"  Width="*"/>
-                    <dxg:GridColumn FieldName="It_val" Header="Italien"  Width="*"/>
+                <dxg:GridColumn FieldName="Project" Header="Projet" GroupIndex="0"/>
+                <dxg:GridColumn FieldName="Type" Header="Type" GroupIndex="1"/>
+                <dxg:GridColumn FieldName="Key" Header="Designation" Width="*"/>
+                <dxg:GridColumn FieldName="En_val" Header="Anglais" Width="*"/>
+                <dxg:GridColumn FieldName="Fr_val" Header="Français"  Width="*"/>
+                <dxg:GridColumn FieldName="De_val" Header="Allemand"  Width="*"/>
+                <dxg:GridColumn FieldName="It_val" Header="Italien"  Width="*"/>
 
-                </dxg:GridControl.Columns>
+            </dxg:GridControl.Columns>
 
-            </dxg:GridControl>
+        </dxg:GridControl>
 
-        </Border>
     </Grid>
+
+
 
 </UserControl>

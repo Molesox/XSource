@@ -1,4 +1,4 @@
-﻿<Window 
+﻿<dx:ThemedWindow 
     x:Name="mainwindow"
     x:Class="XSource.MainWindow"
     xmlns:dxwui="http://schemas.devexpress.com/winfx/2008/xaml/windowsui"
@@ -7,43 +7,55 @@
     xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
     xmlns:Views="clr-namespace:XSource.Views"
     xmlns:dxr="http://schemas.devexpress.com/winfx/2008/xaml/ribbon"
+    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
     xmlns:dxdo="http://schemas.devexpress.com/winfx/2008/xaml/docking"
     xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
     xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
-    WindowStyle="None"
-    AllowsTransparency="True"
+  
     MouseDown="Window_MouseDown"
     ResizeMode="CanMinimize"
-    Background="OrangeRed"
+    xmlns:dxt="http://schemas.devexpress.com/winfx/2008/xaml/core/themekeys"
+    WindowStartupLocation="CenterScreen"
     Title="XSource" 
     xmlns:dxwuin="http://schemas.devexpress.com/winfx/2008/xaml/windowsui/navigation"
     xmlns:ViewModels="clr-namespace:XSource.ViewModels"
-    Height="650" Width="1000">
+    Height="650" 
+    Width="1000" 
+    Closing="OnClosingWindow" 
+    Icon="/icon-translate-19.ico" 
+    HeaderBackground="#2B2B2B"
+    WindowKind="Normal">
+
 
     <Window.DataContext>
         <ViewModels:MainWindowViewModel/>
     </Window.DataContext>
+
 
     <Grid >
 
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
+
         </Grid.RowDefinitions>
 
-        <dxdo:DockLayoutManager  Grid.Row="0"  >
+
+        <dxdo:DockLayoutManager Grid.Row="0"  >
+
             <dxdo:LayoutGroup Caption="LayoutRoot" >
 
                 <dxdo:LayoutPanel AllowClose="False" 
                                   AllowFloat="False" 
                                   AllowHide="False" 
                                   ShowCaption="False" 
-                                  ShowBorder="False"
                                   ShowCloseButton="False" 
                                   ItemWidth="*"
+                                  ShowBorder="False"
                                   >
+
                     <dxwui:NavigationFrame AnimationType="Fade" NavigationCacheMode="Required">
-                        
+
                         <dxmvvm:Interaction.Behaviors>
                             <dxwuin:FrameNavigationService />
                         </dxmvvm:Interaction.Behaviors>
@@ -53,19 +65,33 @@
                         </dxmvvm:Interaction.Triggers>
 
                     </dxwui:NavigationFrame>
-                    
+
                 </dxdo:LayoutPanel>
 
             </dxdo:LayoutGroup>
         </dxdo:DockLayoutManager>
 
-
         <dxr:RibbonStatusBarControl Grid.Row="1">
             <dxr:RibbonStatusBarControl.LeftItems>
-                <dxb:BarButtonItem GlyphSize="Small"  Glyph="\Resources\Images\power-btn.png" ItemClick="BarButtonItem_ItemClick"/>
-                <dxb:BarButtonItem GlyphSize="Small"  Glyph="\Resources\Images\wheel_16x16.png" Command="{Binding OnSettingsClickCommand}" />
+                <dxb:BarButtonItem 
+                                   Glyph="\Resources\Icons\settings.svg" 
+                                  GlyphSize="Large"
+                                    BarItemDisplayMode="Default"
+                                    ToolTip="Paramètres"
+                                   Command="{Binding OnSettingsClickCommand}" AllowGlyphTheming="True" />
             </dxr:RibbonStatusBarControl.LeftItems>
+            <dxr:RibbonStatusBarControl.RightItems>
+                <dxb:BarEditItem ToolTip="Ratio des traductions efféctuées par rapport à la limite mensuelle (500k charactères)." 
+                                 Glyph="\Resources\Images\deepl.png"
+                                 GlyphSize="Large" 
+                                 Content="{Binding DisplayLimitPercentage}" />
+            </dxr:RibbonStatusBarControl.RightItems>
         </dxr:RibbonStatusBarControl>
 
     </Grid>
-</Window>
+
+
+
+
+
+</dx:ThemedWindow>

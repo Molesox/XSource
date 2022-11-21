@@ -8,6 +8,8 @@
              xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol" 
              xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm" 
              xmlns:dxwuin="http://schemas.devexpress.com/winfx/2008/xaml/windowsui/navigation"
+             xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+             xmlns:lang="clr-namespace:DeepL;assembly=DeepL.net"
              xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
              xmlns:dxc="http://schemas.devexpress.com/winfx/2008/xaml/core"
              mc:Ignorable="d"          
@@ -27,18 +29,17 @@
 
 
         <dxlc:GroupBox TitleVisibility="Collapsed" 
-                       BorderThickness="1" 
-                       CornerRadius="3"
-                       BorderBrush="OrangeRed"
+                       BorderThickness="0"               
                        Grid.Row="0"
                        dxe:ValidationService.IsValidationContainer="True"
                        x:Name="container"
                        >
 
             <dxlc:LayoutGroup View="Group"
-                                  Orientation="Vertical"
-                                  ItemLabelsAlignment="Local"
-                                  Margin="10">
+                              Margin="10"
+                              Orientation="Vertical"
+                              ItemLabelsAlignment="Local"
+                              >
 
                 <dxlc:LayoutGroup View="Group"
                                   Orientation="Horizontal"
@@ -46,16 +47,16 @@
                                   Margin="10,0,0,30"
                                   >
 
-
                     <dxlc:LayoutItem Label="Projet"
                                      AddColonToLabel="False"
-                                     MaxWidth="300">
+                                     FontSize="14"
+                                     >
 
                         <dxe:ComboBoxEdit ItemsSource="{Binding Projects}"
                                           SelectedItem="{Binding CurrentProject}"
                                           CornerRadius="2" 
                                           MinHeight="30" 
-                                          MaxWidth="250"
+                                          TextWrapping="Wrap"
                                           DisplayMember="Name" 
                                           AllowNullInput="True"
                                           IsReadOnly="{DXBinding '!IsNewMode'}"
@@ -65,7 +66,8 @@
 
                     <dxlc:LayoutItem Label="Type"
                                      AddColonToLabel="False"
-                                     MaxWidth="300">
+                                     FontSize="14"
+                                     >
 
                         <dxe:ComboBoxEdit ItemsSource="{Binding Types, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                                           DisplayMember="Type"
@@ -73,7 +75,8 @@
                                           AllowNullInput="False"
                                           CornerRadius="2" 
                                           MinHeight="30" 
-                                          MaxWidth="250"
+                                          Margin="10,0,0,0"
+                                          TextWrapping="Wrap"
                                           AllowSpinOnMouseWheel="True"
                                           IsReadOnly="{DXBinding !IsNewMode}"
                                           EditValue="{Binding CurrentItem.Type, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
@@ -82,9 +85,15 @@
 
                     <dxlc:LayoutItem Label="Clé"
                                      AddColonToLabel="False"
-                                     MaxWidth="300">
+                                     FontSize="14"
+                                     
+                                     >
 
-                        <dxe:TextEdit IsReadOnly="{DXBinding '!IsNewMode'}" CornerRadius="2" MinHeight="30" MaxWidth="250"
+                        <dxe:TextEdit IsReadOnly="{DXBinding '!IsNewMode'}" 
+                                      CornerRadius="2" 
+                                      Margin="10,0,0,0"
+                                       TextWrapping="Wrap"
+                                      MinHeight="30" 
                                       EditValue="{Binding CurrentItem.Key, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}" 
                                       AcceptsReturn="False"
                                       AllowNullInput="False"
@@ -97,37 +106,138 @@
                 </dxlc:LayoutGroup>
 
 
-                <Separator BorderBrush="OrangeRed" BorderThickness="0 1 0 0" VerticalAlignment="Top"  />
+                <Separator Margin="7,0,7,0"   BorderThickness="0 1 0 0" VerticalAlignment="Top"  />
 
                 <dxlc:LayoutGroup View="Group"
                                   Orientation="Vertical"
                                   ItemSpace="15"
                                   Padding="10,20,0,0"
-                                  VerticalAlignment="Top" 
+                                  VerticalAlignment="Stretch" 
+                                  
                                   >
 
+
                     <dxlc:LayoutItem Label="Anglais"
+                                     FontSize="14"
+                                     LabelPosition="Top"
+                                     
                                      AddColonToLabel="False">
 
-                        <dxe:TextEdit CornerRadius="2" MinHeight="30" EditValue="{Binding CurrentItem.En_val}" />
-                    </dxlc:LayoutItem>
+                        <Grid>
 
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <dxe:TextEdit Grid.Column="0" 
+                                          CornerRadius="2"
+                                          MinHeight="30"
+                                          EditValue="{Binding CurrentItem.En_val}" 
+                                          TextWrapping="Wrap"  
+                                          />
+
+                            <dxc:SimpleButton Background="Transparent"
+                                              Grid.Column="1"
+                                              Margin="10,0,0,0"
+                                              BorderThickness="0"
+                                              CornerRadius="2"
+                                              HorizontalAlignment="Right"
+                                              IsEnabled="{DXBinding 'IsTradServiceOk and CurrentItem.CanBeTranslated and string.IsNullOrWhiteSpace(CurrentItem.En_val)' }"
+                                              Command="{Binding GetTranslationForCommand}"
+                                              CommandParameter="{x:Static lang:LanguageCode.EnglishAmerican}"
+                                              Glyph="{dxc:DXImage SvgImages/XAF/Action_Translate.svg}" 
+                                              />
+
+                        </Grid>
+
+                    </dxlc:LayoutItem >
+
+
+
+
+                    <dxlc:LayoutItem VerticalAlignment="Stretch"/>
                     <dxlc:LayoutItem Label="Français"
-                                         AddColonToLabel="False">
+                                     LabelPosition="Top"
+                                     FontSize="14"
+                                     AddColonToLabel="False">
+                        <Grid>
 
-                        <dxe:TextEdit CornerRadius="2" MinHeight="30" EditValue="{Binding CurrentItem.Fr_val}" />
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <dxe:TextEdit x:Name="ft_txtbx" CornerRadius="2" MinHeight="30" EditValue="{Binding CurrentItem.Fr_val}" TextWrapping="Wrap" />
+                            <dxc:SimpleButton Grid.Column="1"
+                                              Margin="10,0,0,0" 
+                                              Command="{Binding GetTranslationForCommand}"
+                                              CommandParameter="{x:Static lang:LanguageCode.French}"
+                                              IsEnabled="{DXBinding 'IsTradServiceOk and CurrentItem.CanBeTranslated and string.IsNullOrWhiteSpace(CurrentItem.Fr_val)' }"
+                                              Background="Transparent"
+                                              BorderThickness="0"
+                                              CornerRadius="2"
+                                              Glyph="{dxc:DXImage SvgImages/XAF/Action_Translate.svg}" 
+                                              HorizontalAlignment="Right"/>
+
+                        </Grid>
+
                     </dxlc:LayoutItem>
+                    <dxlc:LayoutItem VerticalAlignment="Stretch"/>
                     <dxlc:LayoutItem Label="Allemand"
-                                         AddColonToLabel="False">
-                        <dxe:TextEdit CornerRadius="2" MinHeight="30" EditValue="{Binding CurrentItem.De_val}" />
+                                     LabelPosition="Top"
+                                     FontSize="14"
+                                     AddColonToLabel="False">
+                        <Grid>
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="auto"/>
+                            </Grid.ColumnDefinitions>
+                            <dxe:TextEdit CornerRadius="2" MinHeight="30" EditValue="{Binding CurrentItem.De_val}" TextWrapping="Wrap"/>
+
+                            <dxc:SimpleButton 
+                                IsEnabled="{DXBinding 'IsTradServiceOk and CurrentItem.CanBeTranslated and string.IsNullOrWhiteSpace(CurrentItem.De_val)' }"
+                                Command="{Binding GetTranslationForCommand}"
+                                CommandParameter="{x:Static lang:LanguageCode.German}"
+                                Background="Transparent" 
+                                Grid.Column="1"
+                                Margin="10,0,0,0" 
+                                BorderThickness="0" 
+                                CornerRadius="2" 
+                                Glyph="{dxc:DXImage SvgImages/XAF/Action_Translate.svg}" HorizontalAlignment="Right"/>
+
+                        </Grid>
 
                     </dxlc:LayoutItem>
+                    <dxlc:LayoutItem VerticalAlignment="Stretch"/>
                     <dxlc:LayoutItem Label="Italien"
-                                         AddColonToLabel="False">
+                                     LabelPosition="Top"
+                                     FontSize="14"
+                                     AddColonToLabel="False">
 
-                        <dxe:TextEdit CornerRadius="2" MinHeight="30" EditValue="{Binding CurrentItem.It_val}" />
+                        <Grid>
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <dxe:TextEdit  CornerRadius="2" MinHeight="30" EditValue="{Binding CurrentItem.It_val}" TextWrapping="Wrap"/>
+                            <dxc:SimpleButton IsEnabled="{DXBinding 'IsTradServiceOk and CurrentItem.CanBeTranslated and string.IsNullOrWhiteSpace(CurrentItem.It_val)' }" 
+                                              Command="{Binding GetTranslationForCommand}"
+                                              CommandParameter="{x:Static lang:LanguageCode.Italian}"
+                                              Background="Transparent" 
+                                              Grid.Column="1" 
+                                              Margin="10,0,0,0" 
+                                              BorderThickness="0"
+                                              CornerRadius="2" 
+                                              Glyph="{dxc:DXImage SvgImages/XAF/Action_Translate.svg}" HorizontalAlignment="Right"/>
+
+                        </Grid>
 
                     </dxlc:LayoutItem>
+                    <dxlc:LayoutItem VerticalAlignment="Stretch"/>
                 </dxlc:LayoutGroup>
             </dxlc:LayoutGroup>
 
@@ -141,11 +251,14 @@
                     >
             <dxc:SimpleButton CornerRadius="2" Width="100" Content="Annuler" 
                               BorderBrush="OrangeRed"
+                              FontSize="14"
                               Command="{Binding NavigateBackCommand}"
+                              Margin="0,0,10,0"
                               />
 
             <dxc:SimpleButton CornerRadius="2" Width="100" Content="Écraser" 
                               BorderBrush="OrangeRed"
+                              FontSize="14"
                               IsEnabled="{Binding ElementName=container, Path=(dxe:ValidationService.HasValidationError), Converter={dxmvvm:BooleanNegationConverter}}"
                               Command="{Binding OverwriteCommand}"
                               />

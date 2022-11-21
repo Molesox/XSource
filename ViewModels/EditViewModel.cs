@@ -1,4 +1,6 @@
 ﻿using Configuration;
+using DeepL;
+using DevExpress.Internal.WinApi.Windows.UI.Notifications;
 using DevExpress.Mvvm;
 using DevExpress.Mvvm.DataAnnotations;
 using DevExpress.Mvvm.Xpf;
@@ -47,6 +49,19 @@ namespace XSource.ViewModels
     {
 
         #region Properties
+
+
+        /// <summary>
+        /// Gets or sets a flag indicating if deepl can be used or not.
+        /// </summary>
+        public bool IsTradServiceOk
+        {
+            get => GetProperty(() => IsTradServiceOk);
+            set => SetProperty(() => IsTradServiceOk, value);
+        }
+
+        long _charLimit { get; set; }
+        long _charCount { get; set; }
 
         /// <summary>
         /// Gets the navigation service from the view.
@@ -107,9 +122,27 @@ namespace XSource.ViewModels
             }
         }
 
-
+        /// <summary>
+        /// Gets or sets the deepl translator.
+        /// </summary>
+        public Translator DeeplTranslator { get; set; }
 
         #endregion
+
+        protected override async void OnInitializeInRuntime()
+        {
+            base.OnInitializeInRuntime();
+
+            DeeplTranslator = new Translator("c secret ;)");
+
+            var usage = await DeeplTranslator.GetUsageAsync();
+            IsTradServiceOk = !usage.AnyLimitReached;
+            _charLimit = usage.Character.Limit;
+            _charCount = usage.Character.Count;
+
+            Messenger.Default.Send<float>((_charCount ) / (float)_charLimit);
+
+        }
 
         #region Commands & Events
 
@@ -121,7 +154,26 @@ namespace XSource.ViewModels
         {
             CurrentItem.Project = CurrentProject?.Name;
             CurrentItem.ParentProject = CurrentProject;
-    ;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="targetLang"></param>
+        [Command]
+        public async void GetTranslationFor(string targetLang)
+        {
+            var (srcLang, text) = CurrentItem.GetFirstNonEmptyLanguageValue();
+
+            if (!string.IsNullOrWhiteSpace(text))
+            {
+                var result = await DeeplTranslator.TranslateTextAsync(text, srcLang, targetLang);
+                CurrentItem.SetVal(targetLang, result.Text);
+                _charCount += text.Length;
+                Messenger.Default.Send<float>((_charCount ) / (float)_charLimit);
+
+            }
+
         }
 
         /// <summary>
@@ -135,9 +187,15 @@ namespace XSource.ViewModels
                 var type = CurrentItem.Type;
                 var filePaths = Types.First(t => t.Type == type).FilePaths;
                 CurrentItem.FilePath = filePaths;
+                XHelper.OverwriteResource(CurrentItem);
+                NavigationService.Navigate("MainView", CurrentItem);
             }
-            XHelper.OverwriteResource(CurrentItem);
-            NavigationService.GoBack(CurrentItem);
+            else
+            {
+
+                XHelper.OverwriteResource(CurrentItem);
+                NavigationService.Navigate("MainView");
+            }
         }
 
         /// <summary>

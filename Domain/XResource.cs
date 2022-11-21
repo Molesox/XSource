@@ -1,4 +1,5 @@
-﻿using DevExpress.Mvvm;
+﻿using DeepL;
+using DevExpress.Mvvm;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -93,8 +94,24 @@ namespace XSource.Domain
             }
         }
 
+        private void OnLanguageInput()
+        {
+            var atLeastOneValue = !string.IsNullOrWhiteSpace(Fr_val) ||
+                                      !string.IsNullOrWhiteSpace(De_val) ||
+                                      !string.IsNullOrWhiteSpace(It_val) ||
+                                      !string.IsNullOrWhiteSpace(En_val);
+
+            CanBeTranslated = atLeastOneValue;
+        }
 
         #region Properies
+
+        public bool CanBeTranslated
+        {
+            get => GetProperty(() => CanBeTranslated);
+            set => SetProperty(() => CanBeTranslated, value);
+        }
+
 
         /// <summary>
         /// Gets or sets a flag indicating if it's a new instance.
@@ -147,7 +164,7 @@ namespace XSource.Domain
         public string En_val
         {
             get => GetProperty(() => En_val);
-            set => SetProperty(() => En_val, value);
+            set => SetProperty(() => En_val, value, OnLanguageInput);
         }
 
         /// <summary>
@@ -156,7 +173,7 @@ namespace XSource.Domain
         public string Fr_val
         {
             get => GetProperty(() => Fr_val);
-            set => SetProperty(() => Fr_val, value);
+            set => SetProperty(() => Fr_val, value, OnLanguageInput);
         }
 
         /// <summary>
@@ -165,7 +182,7 @@ namespace XSource.Domain
         public string De_val
         {
             get => GetProperty(() => De_val);
-            set => SetProperty(() => De_val, value);
+            set => SetProperty(() => De_val, value, OnLanguageInput);
         }
 
         /// <summary>
@@ -174,8 +191,9 @@ namespace XSource.Domain
         public string It_val
         {
             get => GetProperty(() => It_val);
-            set => SetProperty(() => It_val, value);
+            set => SetProperty(() => It_val, value, OnLanguageInput);
         }
+
 
         /// <summary>
         /// Gets or sets the parent project reference.
@@ -190,6 +208,20 @@ namespace XSource.Domain
         #endregion
 
         #region Methods
+
+
+        public (string, string) GetFirstNonEmptyLanguageValue()
+        {
+            if (!string.IsNullOrWhiteSpace(En_val))
+                return (Languages.EN, En_val);
+            else if (!string.IsNullOrWhiteSpace(Fr_val))
+                return (Languages.FR, Fr_val);
+            else if (!string.IsNullOrWhiteSpace(De_val))
+                return (Languages.DE, De_val);
+            else if (!string.IsNullOrWhiteSpace(It_val))
+                return (Languages.IT, It_val);
+            else return (null, null);
+        }
 
         /// <summary>
         /// Sets the value according to the given language. 
@@ -210,6 +242,7 @@ namespace XSource.Domain
                     De_val = value;
                     break;
 
+                case "en-us":
                 case Languages.EN:
                     En_val = value;
                     break;

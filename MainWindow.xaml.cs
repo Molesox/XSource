@@ -18,10 +18,11 @@ namespace XSource
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : ThemedWindow
     {
         public MainWindow()
         {
+            
             InitializeComponent();
         }
 
@@ -31,11 +32,14 @@ namespace XSource
                 this.DragMove();
         }
 
-        private void BarButtonItem_ItemClick(object sender, DevExpress.Xpf.Bars.ItemClickEventArgs e)
+
+
+        private void OnClosingWindow(object sender, System.ComponentModel.CancelEventArgs e)
         {
+
             var result = ThemedMessageBox.Show(title: "XSource", text: "T'es sûr de vouloir quitter ?", messageBoxButtons: MessageBoxButton.OKCancel, icon: MessageBoxImage.Question);
-            if (result == MessageBoxResult.OK)
-                Close();
+
+            e.Cancel = result != MessageBoxResult.OK;
         }
     }
 }

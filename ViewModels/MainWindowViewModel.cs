@@ -28,6 +28,27 @@ namespace XSource.ViewModels
             set => SetProperty(() => AppSettings, value);
         }
 
+        /// <summary>
+        /// Gets or sets the (translated characters / plan limit) x 100
+        /// </summary>
+        public float TradLimitPercentage
+        {
+            get => GetProperty(() => TradLimitPercentage);
+            set => SetProperty(() => TradLimitPercentage, value, () => RaisePropertyChanged(() => DisplayLimitPercentage));
+        }
+
+        /// <summary>
+        /// Gets the display limit percentage.
+        /// </summary>
+        public string DisplayLimitPercentage
+        {
+            get
+            {
+                return $"{TradLimitPercentage:P1}";
+            }
+            
+        }
+
         #endregion
 
         #region Overrides
@@ -38,6 +59,7 @@ namespace XSource.ViewModels
         protected override void OnInitializeInRuntime()
         {
             AppSettings = AppSettingsHelper.GetAppSettings();
+            Messenger.Default.Register<float>(this, (updPercentage) => TradLimitPercentage = updPercentage);
             base.OnInitializeInRuntime();
         }
 
@@ -51,7 +73,7 @@ namespace XSource.ViewModels
         [Command]
         public void OnSettingsClick()
         {
-            NavigationService.Navigate("SettingsView", AppSettings, this,false);
+            NavigationService.Navigate("SettingsView", AppSettings, this, false);
         }
 
         /// <summary>

@@ -28,10 +28,8 @@
         </Grid.RowDefinitions>
 
         <dxlc:GroupBox TitleVisibility="Collapsed" 
-                       BorderThickness="1" 
-                       CornerRadius="3"
-                       BorderBrush="OrangeRed"
-                       Grid.Row="0"
+                        BorderThickness="0"
+                        Grid.Row="0"
                        >
 
             <dxlc:LayoutGroup View="Group"
@@ -40,14 +38,17 @@
                               Margin="10,20,10,10"
                               >
                 <StackPanel>
-                    
-                    <Label Content="Liste des projets" Margin="0,0,0,10"/>
+
+
+                    <Label  Content="Liste des projets" FontSize="14" FontWeight="DemiBold" Margin="3,0,0, 10"/>
 
                     <dxg:GridControl x:Name="xSettingsGrid" 
                          ItemsSource="{Binding AppSettings.ProjectConfigurations}"
                          ShowBorder="False"
                          Margin="3"
-                         MaxHeight="500"        
+                         FontSize="14"
+                         MaxHeight="500"   
+                         
                          >
 
                         <dxg:GridControl.InputBindings>
@@ -113,12 +114,15 @@
                     
                     >
             <dxc:SimpleButton CornerRadius="2" Width="100" Content="Annuler" 
-                              BorderBrush="OrangeRed"
                               Command="{Binding NavigateBackCommand}"
+                              FontSize="14"
+                              Margin="0,0,10,0"
+                              BorderBrush="OrangeRed"
                               />
             <dxc:SimpleButton CornerRadius="2" Width="100" Content="Écraser" 
                               Margin="8,0,0,0" 
                               BorderBrush="OrangeRed"
+                              FontSize="14"
                               Command="{Binding SaveAppSettingsCommand}"
                               />
         </StackPanel>
