@@ -19,7 +19,16 @@
     <UserControl.DataContext>
         <ViewModels:SettingsViewModel/>
     </UserControl.DataContext>
-
+    <dxmvvm:Interaction.Behaviors>
+        <dxc:DXSplashScreenService>
+            <dxc:DXSplashScreenService.ViewTemplate>
+                <DataTemplate>
+                    <dxc:WaitIndicator Content="Saving" />
+                </DataTemplate>
+            </dxc:DXSplashScreenService.ViewTemplate>
+        </dxc:DXSplashScreenService>
+    </dxmvvm:Interaction.Behaviors>
+    
     <Grid Margin="5">
 
         <Grid.RowDefinitions>
@@ -113,7 +122,7 @@
                     Margin="0,5,9,5"
                     
                     >
-            <dxc:SimpleButton CornerRadius="2" Width="100" Content="Annuler" 
+            <dxc:SimpleButton CornerRadius="2" Width="100" Content="Retour" 
                               Command="{Binding NavigateBackCommand}"
                               FontSize="14"
                               Margin="0,0,10,0"

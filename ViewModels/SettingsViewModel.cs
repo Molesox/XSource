@@ -36,6 +36,11 @@ namespace XSource.ViewModels
         private INavigationService NavigationService => this.GetService<INavigationService>();
 
         /// <summary>
+        /// Gets the wait indicator service.
+        /// </summary>
+        protected ISplashScreenService WaitIndicator  => this.GetService<ISplashScreenService>(); 
+
+        /// <summary>
         /// Gets or sets the AppSettings
         /// </summary>
         public AppSettings AppSettings
@@ -96,7 +101,10 @@ namespace XSource.ViewModels
         [Command]
         public void SaveAppSettings()
         {
+            //WaitIndicator.ShowSplashScreen();
             AppSettingsHelper.WriteAppSettings(AppSettings);
+            //WaitIndicator.HideSplashScreen();
+
             NavigationService.Navigate("MainView", AppSettings);
         }
 
@@ -113,7 +121,10 @@ namespace XSource.ViewModels
         {
             if (e.Parameter == null)
                 return;
+
             var temp = e.Parameter as AppSettings;
+
+            //Deep copy allows changes to be canceled.
             AppSettings = new AppSettings()
             {
                 ProjectConfigurations = new System.ComponentModel.BindingList<ProjectConfig>(),
