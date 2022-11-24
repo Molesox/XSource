@@ -87,8 +87,7 @@
                                     Glyph="/Resources/Icons/DeepL_logo.svg"
                                     GlyphSize="Custom"
                                     GlyphAlignment="Left"
-                                    CustomGlyphSize="50 20"
-                                    
+                                    CustomGlyphSize="60 20"
                                     Content="{Binding DisplayLimitPercentage}"
                                  >
 
