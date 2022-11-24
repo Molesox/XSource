@@ -54,6 +54,15 @@ namespace XSource.ViewModels
         }
 
         /// <summary>
+        /// Gets or sets the key of the editing item.
+        /// </summary>
+        public string CurrentEditingKey
+        {
+            get => GetProperty(() => CurrentEditingKey);
+            set => SetProperty(() => CurrentEditingKey, value);
+        }
+
+        /// <summary>
         /// Gets or sets the list of projects
         /// </summary>
         public BindingList<XProject> Projects
@@ -138,6 +147,7 @@ namespace XSource.ViewModels
         [Command]
         public void EditResource(RowClickArgs args)
         {
+            CurrentEditingKey = CurrentItem.Key;
             NavigationService.Navigate("EditView", new { Projects, CurrentItem }, this, false);
         }
 
@@ -197,7 +207,9 @@ namespace XSource.ViewModels
                 if (e.Parameter is AppSettings)
                 {
                     AppSettings = e.Parameter as AppSettings;
+                    XWaitIndicator.Show();
                     RefreshDataSource(null);
+                    XWaitIndicator.Close();
                 }
                 else
                 {
@@ -206,6 +218,14 @@ namespace XSource.ViewModels
                     ItemsSource.Add(newItem);
                     CurrentItem = newItem;
                 }
+            }
+            else
+            {
+                XWaitIndicator.Show();
+                RefreshDataSource(null);
+                if (!string.IsNullOrWhiteSpace(CurrentEditingKey))
+                    CurrentItem = ItemsSource.FirstOrDefault(it => it.Key == CurrentEditingKey);
+                XWaitIndicator.Close();
             }
         }
 

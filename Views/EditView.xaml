@@ -88,7 +88,9 @@
                                      FontSize="14"
                                      
                                      >
-
+                        <dxmvvm:Interaction.Behaviors>
+                            <dxmvvm:FocusBehavior/>
+                        </dxmvvm:Interaction.Behaviors>
                         <dxe:TextEdit IsReadOnly="{DXBinding '!IsNewMode'}" 
                                       CornerRadius="2" 
                                       Margin="10,0,0,0"
@@ -108,36 +110,36 @@
 
                 <Separator Margin="7,0,7,0"   BorderThickness="0 1 0 0" VerticalAlignment="Top"  />
 
-                <dxlc:LayoutGroup View="Group"
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Focusable="False" >
+                    <dxlc:LayoutGroup View="Group"
                                   Orientation="Vertical"
                                   ItemSpace="15"
-                                  Padding="10,20,0,0"
-                                  VerticalAlignment="Stretch" 
-                                  
+                                  Padding="10,20,0,0" 
+                                  HorizontalAlignment="Stretch"
                                   >
 
 
-                    <dxlc:LayoutItem Label="Anglais"
+                        <dxlc:LayoutItem Label="Anglais"
                                      FontSize="14"
                                      LabelPosition="Top"
                                      
                                      AddColonToLabel="False">
 
-                        <Grid>
+                            <Grid>
 
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="auto"/>
-                            </Grid.ColumnDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="auto"/>
+                                </Grid.ColumnDefinitions>
 
-                            <dxe:TextEdit Grid.Column="0" 
+                                <dxe:TextEdit Grid.Column="0" 
                                           CornerRadius="2"
                                           MinHeight="30"
                                           EditValue="{Binding CurrentItem.En_val}" 
                                           TextWrapping="Wrap"  
                                           />
 
-                            <dxc:SimpleButton Background="Transparent"
+                                <dxc:SimpleButton Background="Transparent"
                                               Grid.Column="1"
                                               Margin="10,0,0,0"
                                               BorderThickness="0"
@@ -145,100 +147,106 @@
                                               HorizontalAlignment="Right"
                                               IsEnabled="{DXBinding 'IsTradServiceOk and CurrentItem.CanBeTranslated and string.IsNullOrWhiteSpace(CurrentItem.En_val)' }"
                                               Command="{Binding GetTranslationForCommand}"
+                                              ToolTip="Obtenir la traduction anglaise..."
                                               CommandParameter="{x:Static lang:LanguageCode.EnglishAmerican}"
-                                              Glyph="{dxc:DXImage SvgImages/XAF/Action_Translate.svg}" 
+                                              Glyph="/Resources/Icons/Action_Translate.svg" 
                                               />
 
-                        </Grid>
+                            </Grid>
 
-                    </dxlc:LayoutItem >
-
-
+                        </dxlc:LayoutItem >
 
 
-                    <dxlc:LayoutItem VerticalAlignment="Stretch"/>
-                    <dxlc:LayoutItem Label="Français"
+
+
+                        <dxlc:LayoutItem VerticalAlignment="Stretch"/>
+                        <dxlc:LayoutItem Label="Français"
                                      LabelPosition="Top"
                                      FontSize="14"
                                      AddColonToLabel="False">
-                        <Grid>
+                            <Grid>
 
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="auto"/>
-                            </Grid.ColumnDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="auto"/>
+                                </Grid.ColumnDefinitions>
 
-                            <dxe:TextEdit x:Name="ft_txtbx" CornerRadius="2" MinHeight="30" EditValue="{Binding CurrentItem.Fr_val}" TextWrapping="Wrap" />
-                            <dxc:SimpleButton Grid.Column="1"
+                                <dxe:TextEdit x:Name="ft_txtbx" CornerRadius="2"  MinHeight="30" EditValue="{Binding CurrentItem.Fr_val}" SelectAllOnGotFocus="False" SelectAllOnMouseUp="False" TextWrapping="Wrap" />
+                                <dxc:SimpleButton Grid.Column="1"
                                               Margin="10,0,0,0" 
                                               Command="{Binding GetTranslationForCommand}"
                                               CommandParameter="{x:Static lang:LanguageCode.French}"
                                               IsEnabled="{DXBinding 'IsTradServiceOk and CurrentItem.CanBeTranslated and string.IsNullOrWhiteSpace(CurrentItem.Fr_val)' }"
                                               Background="Transparent"
+                                              ToolTip="Obtenir la traduction française..."
                                               BorderThickness="0"
                                               CornerRadius="2"
-                                              Glyph="{dxc:DXImage SvgImages/XAF/Action_Translate.svg}" 
+                                              Glyph="/Resources/Icons/Action_Translate.svg" 
                                               HorizontalAlignment="Right"/>
 
-                        </Grid>
+                            </Grid>
 
-                    </dxlc:LayoutItem>
-                    <dxlc:LayoutItem VerticalAlignment="Stretch"/>
-                    <dxlc:LayoutItem Label="Allemand"
+                        </dxlc:LayoutItem>
+                        <dxlc:LayoutItem VerticalAlignment="Stretch"/>
+                        <dxlc:LayoutItem Label="Allemand"
                                      LabelPosition="Top"
                                      FontSize="14"
                                      AddColonToLabel="False">
-                        <Grid>
+                            <Grid>
 
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="auto"/>
-                            </Grid.ColumnDefinitions>
-                            <dxe:TextEdit CornerRadius="2" MinHeight="30" EditValue="{Binding CurrentItem.De_val}" TextWrapping="Wrap"/>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="auto"/>
+                                </Grid.ColumnDefinitions>
+                                <dxe:TextEdit CornerRadius="2" MinHeight="30" EditValue="{Binding CurrentItem.De_val}" TextWrapping="Wrap"/>
 
-                            <dxc:SimpleButton 
+                                <dxc:SimpleButton 
                                 IsEnabled="{DXBinding 'IsTradServiceOk and CurrentItem.CanBeTranslated and string.IsNullOrWhiteSpace(CurrentItem.De_val)' }"
                                 Command="{Binding GetTranslationForCommand}"
                                 CommandParameter="{x:Static lang:LanguageCode.German}"
                                 Background="Transparent" 
+                                ToolTip="Obtenir la traduction allemande..."
                                 Grid.Column="1"
                                 Margin="10,0,0,0" 
                                 BorderThickness="0" 
                                 CornerRadius="2" 
-                                Glyph="{dxc:DXImage SvgImages/XAF/Action_Translate.svg}" HorizontalAlignment="Right"/>
+                                Glyph="/Resources/Icons/Action_Translate.svg" HorizontalAlignment="Right"/>
 
-                        </Grid>
+                            </Grid>
 
-                    </dxlc:LayoutItem>
-                    <dxlc:LayoutItem VerticalAlignment="Stretch"/>
-                    <dxlc:LayoutItem Label="Italien"
+                        </dxlc:LayoutItem>
+                        <dxlc:LayoutItem VerticalAlignment="Stretch"/>
+                        <dxlc:LayoutItem Label="Italien"
                                      LabelPosition="Top"
                                      FontSize="14"
                                      AddColonToLabel="False">
 
-                        <Grid>
+                            <Grid>
 
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="auto"/>
-                            </Grid.ColumnDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="auto"/>
+                                </Grid.ColumnDefinitions>
 
-                            <dxe:TextEdit  CornerRadius="2" MinHeight="30" EditValue="{Binding CurrentItem.It_val}" TextWrapping="Wrap"/>
-                            <dxc:SimpleButton IsEnabled="{DXBinding 'IsTradServiceOk and CurrentItem.CanBeTranslated and string.IsNullOrWhiteSpace(CurrentItem.It_val)' }" 
+                                <dxe:TextEdit  CornerRadius="2" MinHeight="30" EditValue="{Binding CurrentItem.It_val}" TextWrapping="Wrap"/>
+                                <dxc:SimpleButton IsEnabled="{DXBinding 'IsTradServiceOk and CurrentItem.CanBeTranslated and string.IsNullOrWhiteSpace(CurrentItem.It_val)' }" 
                                               Command="{Binding GetTranslationForCommand}"
                                               CommandParameter="{x:Static lang:LanguageCode.Italian}"
+                                              ToolTip="Obtenir la traduction italienne..."
                                               Background="Transparent" 
                                               Grid.Column="1" 
                                               Margin="10,0,0,0" 
                                               BorderThickness="0"
                                               CornerRadius="2" 
-                                              Glyph="{dxc:DXImage SvgImages/XAF/Action_Translate.svg}" HorizontalAlignment="Right"/>
+                                              Glyph="/Resources/Icons/Action_Translate.svg" HorizontalAlignment="Right"/>
 
-                        </Grid>
+                            </Grid>
 
-                    </dxlc:LayoutItem>
-                    <dxlc:LayoutItem VerticalAlignment="Stretch"/>
-                </dxlc:LayoutGroup>
+                        </dxlc:LayoutItem>
+                        <dxlc:LayoutItem VerticalAlignment="Stretch"/>
+                    </dxlc:LayoutGroup>
+                </ScrollViewer>
+
             </dxlc:LayoutGroup>
 
 
@@ -264,4 +272,5 @@
                               />
         </StackPanel>
     </Grid>
+
 </UserControl>

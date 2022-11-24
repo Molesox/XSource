@@ -59,6 +59,7 @@ namespace XSource.ViewModels
         protected override void OnInitializeInRuntime()
         {
             AppSettings = AppSettingsHelper.GetAppSettings();
+         
             Messenger.Default.Register<float>(this, (updPercentage) => TradLimitPercentage = updPercentage);
             base.OnInitializeInRuntime();
         }

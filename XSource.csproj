@@ -237,6 +237,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Domain\PathExistsAttribute.cs" />
+    <Compile Include="Helpers\XWaitIndicator.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="Views\SettingsView.xaml.cs">
       <DependentUpon>SettingsView.xaml</DependentUpon>
@@ -311,6 +312,7 @@
     <Resource Include="Resources\Icons\DeepL_logo.svg" />
     <Resource Include="Resources\Icons\DeepL_logo.png" />
     <Resource Include="Resources\Icons\DeepL_logo11.svg" />
+    <Resource Include="Resources\Icons\Action_Translate.svg" />
     <Content Include="Settings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

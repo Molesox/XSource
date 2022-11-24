@@ -2,11 +2,14 @@
 using DevExpress.Mvvm;
 using DevExpress.Mvvm.DataAnnotations;
 using DevExpress.Mvvm.Xpf;
+using DevExpress.Xpf.Core;
+using DevExpress.Xpf.Core.Native;
 using DevExpress.Xpf.Editors;
 using DevExpress.Xpf.Grid;
 using DevExpress.Xpf.WindowsUI.Navigation;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
 using XSource.Domain;
 using XSource.Helpers;
 using XSource.Services;
@@ -35,10 +38,7 @@ namespace XSource.ViewModels
         /// </summary>
         private INavigationService NavigationService => this.GetService<INavigationService>();
 
-        /// <summary>
-        /// Gets the wait indicator service.
-        /// </summary>
-        protected ISplashScreenService WaitIndicator  => this.GetService<ISplashScreenService>(); 
+
 
         /// <summary>
         /// Gets or sets the AppSettings
@@ -56,7 +56,8 @@ namespace XSource.ViewModels
 
         protected override void OnInitializeInRuntime()
         {
-            ValidateRowCommand = new DelegateCommand<RowValidationArgs> (ValidateRow);
+            ValidateRowCommand = new DelegateCommand<RowValidationArgs>(ValidateRow);
+
             base.OnInitializeInRuntime();
         }
 
@@ -88,7 +89,7 @@ namespace XSource.ViewModels
             {
                 args.Result = new ValidationErrorInfo($"Ce chemin d'accès est déjà défini pour le projet {otherProj.ProjectName}", ValidationErrorType.Default);
                 return;
-            }        
+            }
 
         }
 
@@ -101,9 +102,9 @@ namespace XSource.ViewModels
         [Command]
         public void SaveAppSettings()
         {
-            //WaitIndicator.ShowSplashScreen();
+            XWaitIndicator.Show(500);
             AppSettingsHelper.WriteAppSettings(AppSettings);
-            //WaitIndicator.HideSplashScreen();
+            XWaitIndicator.Close();
 
             NavigationService.Navigate("MainView", AppSettings);
         }
@@ -114,7 +115,7 @@ namespace XSource.ViewModels
 
         public void NavigatedFrom(NavigationEventArgs e)
         {
-          
+
         }
 
         public void NavigatedTo(NavigationEventArgs e)

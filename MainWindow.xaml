@@ -13,7 +13,7 @@
     xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
   
     MouseDown="Window_MouseDown"
-    ResizeMode="CanMinimize"
+    ResizeMode="CanResize"
     xmlns:dxt="http://schemas.devexpress.com/winfx/2008/xaml/core/themekeys"
     WindowStartupLocation="CenterScreen"
     Title="XSource" 
@@ -54,7 +54,7 @@
                                   ShowBorder="False"
                                   >
 
-                    <dxwui:NavigationFrame AnimationType="Fade" NavigationCacheMode="Required">
+                    <dxwui:NavigationFrame AnimationType="Fade"   NavigationCacheMode="Required">
 
                         <dxmvvm:Interaction.Behaviors>
                             <dxwuin:FrameNavigationService />
@@ -77,13 +77,14 @@
                                     Glyph="\Resources\Icons\settings.svg" 
                                     LargeGlyph="\Resources\Icons\settings.svg" 
                     
-                                    GlyphSize="Medium"
+                                    GlyphSize="Large"
                                     BarItemDisplayMode="Default"
                                     ToolTip="Paramètres"
-                                   Command="{Binding OnSettingsClickCommand}" AllowGlyphTheming="True" />
+                                    Command="{Binding OnSettingsClickCommand}" 
+                                    />
             </dxr:RibbonStatusBarControl.LeftItems>
             <dxr:RibbonStatusBarControl.RightItems  >
-                <dxb:BarButtonItem  ToolTip="Ratio des traductions efféctuées par rapport à la limite mensuelle (500k charactères)." 
+                <dxb:BarButtonItem  ToolTip="Ratio des traductions efféctuées par rapport à la limite mensuelle (500k caractères)." 
                                     Glyph="/Resources/Icons/DeepL_logo.svg"
                                     GlyphSize="Custom"
                                     GlyphAlignment="Left"

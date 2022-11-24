@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using XSource.Domain;
 using XSource.Helpers;
+using XSource.Services;
 
 namespace XSource.ViewModels
 {
@@ -163,6 +164,8 @@ namespace XSource.ViewModels
         [Command]
         public async void GetTranslationFor(string targetLang)
         {
+            XWaitIndicator.Show(100);
+
             var (srcLang, text) = CurrentItem.GetFirstNonEmptyLanguageValue();
 
             if (!string.IsNullOrWhiteSpace(text))
@@ -173,6 +176,7 @@ namespace XSource.ViewModels
                 Messenger.Default.Send<float>((_charCount ) / (float)_charLimit);
 
             }
+            XWaitIndicator.Close();
 
         }
 
@@ -182,18 +186,23 @@ namespace XSource.ViewModels
         [Command]
         public void Overwrite()
         {
+            XWaitIndicator.Show(500);
             if (IsNewMode)
             {
                 var type = CurrentItem.Type;
                 var filePaths = Types.First(t => t.Type == type).FilePaths;
                 CurrentItem.FilePath = filePaths;
                 XHelper.OverwriteResource(CurrentItem);
+                XWaitIndicator.Close();
+
                 NavigationService.Navigate("MainView", CurrentItem);
             }
             else
             {
 
                 XHelper.OverwriteResource(CurrentItem);
+                XWaitIndicator.Close();
+
                 NavigationService.Navigate("MainView");
             }
         }
@@ -222,6 +231,7 @@ namespace XSource.ViewModels
             CurrentItem = param.CurrentItem;
             IsNewMode = CurrentItem.IsNew;
             Projects = param.Projects;
+        
             CurrentProject = Projects.FirstOrDefault(p => p.Name == CurrentItem.Project);
             if (CurrentProject == null)
             {

@@ -18,16 +18,6 @@
         <ViewModels:MainViewModel/>
     </UserControl.DataContext>
 
-    <UserControl.Resources>
-
-        <Style x:Key="rowStyle" TargetType="dxg:RowControl">
-            <Style.Triggers>
-                <Trigger Property="dxg:GridViewBase.IsFocusedRow" Value="True">
-                    
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-    </UserControl.Resources>
     
     <Grid>
         <dxg:GridControl x:Name="xResourcesGrid" 
@@ -62,7 +52,6 @@
                                AllowEditing="False"
                                ShowValidationAttributeErrors="True"
                                ValidatesOnNotifyDataErrors="True"
-                               RowStyle="{StaticResource rowStyle}"
                                RowDoubleClickCommand="{Binding EditResourceCommand }"
                                DataSourceRefreshCommand="{Binding RefreshDataSourceCommand}"
                                ValidateRowDeletionCommand="{Binding ValidateRowDeletionCommand}"

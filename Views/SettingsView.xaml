@@ -13,22 +13,14 @@
              xmlns:dxc="http://schemas.devexpress.com/winfx/2008/xaml/core"
              mc:Ignorable="d"          
              xmlns:ViewModels="clr-namespace:XSource.ViewModels"
-             xmlns:Service="clr-namespace:XSource.Services"             
+             xmlns:Service="clr-namespace:XSource.Services" 
              d:DesignHeight="800" d:DesignWidth="800">
 
     <UserControl.DataContext>
         <ViewModels:SettingsViewModel/>
     </UserControl.DataContext>
-    <dxmvvm:Interaction.Behaviors>
-        <dxc:DXSplashScreenService>
-            <dxc:DXSplashScreenService.ViewTemplate>
-                <DataTemplate>
-                    <dxc:WaitIndicator Content="Saving" />
-                </DataTemplate>
-            </dxc:DXSplashScreenService.ViewTemplate>
-        </dxc:DXSplashScreenService>
-    </dxmvvm:Interaction.Behaviors>
-    
+
+
     <Grid Margin="5">
 
         <Grid.RowDefinitions>
@@ -95,18 +87,21 @@
                             <dxg:GridColumn FieldName="ProjectName" 
                                             Header="Nom" 
                                             SortIndex="0"
-                                            EditFormVisibleIndex="0"/>
+                                            EditFormVisibleIndex="0"
+                                            />
                             <dxg:GridColumn FieldName="ProjectPath"
                                             Header="Chemin d'accès"
                                             Width="*"
                                             EditFormVisibleIndex="2"
                                             EditFormStartNewRow="True"
-                                            EditFormColumnSpan="2"/>
+                                            EditFormColumnSpan="2"
+                                            />
                             <dxg:GridColumn FieldName="IsActive" 
                                             Header="Actif"
                                             HorizontalHeaderContentAlignment="Center"
                                             AllowEditing="true"
-                                            EditFormVisibleIndex="1"/>
+                                            EditFormVisibleIndex="1"
+                                            />
 
                         </dxg:GridControl.Columns>
 
@@ -122,7 +117,7 @@
                     Margin="0,5,9,5"
                     
                     >
-            <dxc:SimpleButton CornerRadius="2" Width="100" Content="Retour" 
+            <dxc:SimpleButton CornerRadius="2" Width="100" Content="Annuler" 
                               Command="{Binding NavigateBackCommand}"
                               FontSize="14"
                               Margin="0,0,10,0"
