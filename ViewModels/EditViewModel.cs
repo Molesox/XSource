@@ -9,6 +9,7 @@ using DevExpress.Xpf.WindowsUI.Navigation;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -133,8 +134,8 @@ namespace XSource.ViewModels
         protected override async void OnInitializeInRuntime()
         {
             base.OnInitializeInRuntime();
-
-            DeeplTranslator = new Translator("81e0e30d-fce8-6d8e-dd98-b073b8050572:fx");
+            
+            DeeplTranslator = new Translator(ConfigurationManager.AppSettings.Get("DeeplAPI"));
 
             var usage = await DeeplTranslator.GetUsageAsync();
             IsTradServiceOk = !usage.AnyLimitReached;

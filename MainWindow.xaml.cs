@@ -37,7 +37,7 @@ namespace XSource
         private void OnClosingWindow(object sender, System.ComponentModel.CancelEventArgs e)
         {
 
-            var result = ThemedMessageBox.Show(title: "XSource", text: "T'es sûr de vouloir quitter ?", messageBoxButtons: MessageBoxButton.OKCancel, icon: MessageBoxImage.Question);
+            var result = ThemedMessageBox.Show(title: "XSource", text: "T'es sûr de vouloir quitter ?", messageBoxButtons: MessageBoxButton.OKCancel, icon: MessageBoxImage.None);
 
             e.Cancel = result != MessageBoxResult.OK;
         }
